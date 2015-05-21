@@ -8,8 +8,8 @@ SETS
 PARAMETERS
         cota(k)
         /
-                Tipo1            100
-                Tipo2            100
+                Tipo1            138
+                Tipo2            115
 *                Tipo3            40
         /
 
@@ -38,15 +38,15 @@ PARAMETERS
         cap(k)
         /
                 Tipo1            1.5
-                Tipo2            2
-*               Tipo3            3
+*               Tipo2            2
+                Tipo2            3
         /
         
         velv(k)
         /
                 Tipo1    90
-                Tipo2    95
-*                Tipo3    85
+*                Tipo2    95
+                Tipo2    85
         /
 
         alpha(m)
@@ -157,8 +157,8 @@ TABLE vav(k,i)
 
                         N               G               D               T               M               A               Z
         Tipo1           60              55              10              8               5               0               0
-        Tipo2           30              45              15              28              5               0               0
-*        Tipo3           20              40              20              30              5               0               0
+*        Tipo2           30              45              15              28              5               0               0
+        Tipo2           20              40              20              30              5               0               0
 ;
 TABLE dist(i,j) distancia de i a j
                        N        G        D        T        M        A        Z
@@ -244,13 +244,16 @@ res8(i,j,k)$(dist(i,j)>0).. X(i,j,k) =L= cota(k)*Y(i,j,k);
 
 options optcr=0;
 
-model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+*model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+model thecost /all/;
 solve thecost minimize Coste using MIP;
 
-model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+*model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8,resTiempo/;
+model theequality /all/;
 solve theequality maximize Equidad using MIP;
 
-model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+*model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+model thetime /all/;
 solve thetime minimize Tiempo using MIP;
 
 

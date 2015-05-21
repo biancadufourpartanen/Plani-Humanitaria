@@ -1,4 +1,4 @@
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 1
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -13,8 +13,8 @@ C o m p i l a t i o n
    8  PARAMETERS
    9          cota(k)
   10          /
-  11                  Tipo1            100
-  12                  Tipo2            100
+  11                  Tipo1            138
+  12                  Tipo2            115
   13  *                Tipo3            40
   14          /
   15   
@@ -43,20 +43,20 @@ C o m p i l a t i o n
   38          cap(k)
   39          /
   40                  Tipo1            1.5
-  41                  Tipo2            2
-  42  *               Tipo3            3
+  41  *               Tipo2            2
+  42                  Tipo2            3
   43          /
   44   
   45          velv(k)
   46          /
   47                  Tipo1    90
-  48                  Tipo2    95
-  49  *                Tipo3    85
+  48  *                Tipo2    95
+  49                  Tipo2    85
   50          /
   51   
   52          alpha(m)
   53          /
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 2
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -114,7 +114,7 @@ C o m p i l a t i o n
  104  TABLE cv(i,j)
  105   
  106                          N                  G                 D                 T                 M                 A                  Z
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 3
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -170,9 +170,9 @@ C o m p i l a t i o n
  157   
  158                          N               G               D               T               M               A               Z
  159          Tipo1           60              55              10              8               5               0               0
- 160          Tipo2           30              45              15              28              5               0               0
- 161  *        Tipo3           20              40              20              30              5               0               0
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 4
+ 160  *        Tipo2           30              45              15              28              5               0               0
+ 161          Tipo2           20              40              20              30              5               0               0
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -230,7 +230,7 @@ C o m p i l a t i o n
  214  FOBJETIVO3 tiempo
  215   
  216  flujoAyuda lo que sale tiene que ser igual a lo que llega
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 5
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -265,41 +265,44 @@ C o m p i l a t i o n
  244   
  245  options optcr=0;
  246   
- 247  model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
- 248  solve thecost minimize Coste using MIP;
- 249   
- 250  model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
- 251  solve theequality maximize Equidad using MIP;
- 252   
- 253  *model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
- 254  *solve thetime minimize Tiempo using MIP;
- 255   
- 256   
- 257  *$(dist(i,j) gt 0),
+ 247  *model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+ 248  model thecost /all/;
+ 249  solve thecost minimize Coste using MIP;
+ 250   
+ 251  *model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8,resTiempo/;
+ 252  model theequality /all/;
+ 253  solve theequality maximize Equidad using MIP;
+ 254   
+ 255  *model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+ 256  model thetime /all/;
+ 257  solve thetime minimize Tiempo using MIP;
  258   
- 259  *min coste
- 260  *min tiempo
- 261  *min equidad
- 262  *-> matriz de pagos
- 263   
- 264  *min p_1+p_2
- 265  *coste+n_1-p_1 = meta_c
- 266  *tiempo+n_2-p_2 = meta_t
- 267  *equidad +n_3-p_3 = 0
- 268   
- 269  *Hasta 25 de mayo
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 6
+ 259   
+ 260  *$(dist(i,j) gt 0),
+ 261   
+ 262  *min coste
+ 263  *min tiempo
+ 264  *min equidad
+ 265  *-> matriz de pagos
+ 266   
+ 267  *min p_1+p_2
+ 268  *coste+n_1-p_1 = meta_c
+ 269  *tiempo+n_2-p_2 = meta_t
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
 
- 270  *Programacion multiobjectivo por metas
+ 270  *equidad +n_3-p_3 = 0
+ 271   
+ 272  *Hasta 25 de mayo
+ 273  *Programacion multiobjectivo por metas
 
 
-COMPILATION TIME     =        0.004 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 7
+COMPILATION TIME     =        0.002 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE thecost Using MIP From line 248
+Equation Listing    SOLVE thecost Using MIP From line 249
 
 
 ---- FOBJETIVO1  =E=  restriccion de la funcion objectivo cost
@@ -321,6 +324,20 @@ FOBJETIVO1..  - 40*X(N,G,Tipo1) - 60*X(N,G,Tipo2) - 20*X(N,D,Tipo1) - 30*X(N,D,T
       - 13.75*carga(A,Z,Tipo1) - 13.75*carga(A,Z,Tipo2) - 6.25*carga(Z,M,Tipo1) - 6.25*carga(Z,M,Tipo2) - 13.75*carga(Z,A,Tipo1) - 13.75*carga(Z,A,Tipo2) + Coste =E= 0 ; (LHS = 0)
      
 
+---- FOBJETIVO2  =L=  equidad
+
+FOBJETIVO2(A)..  - 0.00133333333333333*load(A) + Equidad =L= 0 ; (LHS = 0)
+     
+FOBJETIVO2(Z)..  - 0.00333333333333333*load(Z) + Equidad =L= 0 ; (LHS = 0)
+     
+
+---- FOBJETIVO3  =G=  tiempo
+
+FOBJETIVO3(A)..  - Time(A) + Tiempo =G= 0 ; (LHS = 0)
+     
+FOBJETIVO3(Z)..  - Time(Z) + Tiempo =G= 0 ; (LHS = 0)
+     
+
 ---- flujoAyuda  =E=  lo que sale tiene que ser igual a lo que llega
 
 flujoAyuda(N)..  - carga(N,G,Tipo1) - carga(N,G,Tipo2) - carga(N,D,Tipo1) - carga(N,D,Tipo2) - carga(N,T,Tipo1) - carga(N,T,Tipo2) + carga(G,N,Tipo1) + carga(G,N,Tipo2) + carga(D,N,Tipo1) + carga(D,N,Tipo2) + carga(T,N,Tipo1) + carga(T,N,Tipo2) - load(N)
@@ -338,9 +355,16 @@ REMAINING 4 ENTRIES SKIPPED
 
 ---- flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
 
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 8
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE thecost Using MIP From line 249
+
+
+     flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
+
 flujoCoche(N,Tipo1)..  - X(N,G,Tipo1) - X(N,D,Tipo1) - X(N,T,Tipo1) + X(G,N,Tipo1) + X(D,N,Tipo1) + X(T,N,Tipo1) =G= -60 ; (LHS = 0)
      
-flujoCoche(N,Tipo2)..  - X(N,G,Tipo2) - X(N,D,Tipo2) - X(N,T,Tipo2) + X(G,N,Tipo2) + X(D,N,Tipo2) + X(T,N,Tipo2) =G= -30 ; (LHS = 0)
+flujoCoche(N,Tipo2)..  - X(N,G,Tipo2) - X(N,D,Tipo2) - X(N,T,Tipo2) + X(G,N,Tipo2) + X(D,N,Tipo2) + X(T,N,Tipo2) =G= -20 ; (LHS = 0)
      
 flujoCoche(G,Tipo1)..  X(N,G,Tipo1) - X(G,N,Tipo1) - X(G,D,Tipo1) - X(G,M,Tipo1) + X(D,G,Tipo1) + X(M,G,Tipo1) =G= -55 ; (LHS = 0)
      
@@ -353,13 +377,6 @@ flow(N)..  load(N) =L= 800 ; (LHS = 0)
      
 flow(G)..  load(G) =L= 500 ; (LHS = 0)
      
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 8
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE thecost Using MIP From line 248
-
-
-     flow  =L=  lo que queda tiene que ser menor que la demanda mas la oferta
-
 flow(D)..  load(D) =L= 0 ; (LHS = 0)
      
 REMAINING 4 ENTRIES SKIPPED
@@ -374,7 +391,7 @@ demandatot..  load(A) + load(Z) =E= 500 ; (LHS = 0, INFES = 500 ****)
 
 cargacapa(N,G,Tipo1)..  - 1.5*X(N,G,Tipo1) + carga(N,G,Tipo1) =L= 0 ; (LHS = 0)
      
-cargacapa(N,G,Tipo2)..  - 2*X(N,G,Tipo2) + carga(N,G,Tipo2) =L= 0 ; (LHS = 0)
+cargacapa(N,G,Tipo2)..  - 3*X(N,G,Tipo2) + carga(N,G,Tipo2) =L= 0 ; (LHS = 0)
      
 cargacapa(N,D,Tipo1)..  - 1.5*X(N,D,Tipo1) + carga(N,D,Tipo1) =L= 0 ; (LHS = 0)
      
@@ -386,19 +403,34 @@ REMAINING 41 ENTRIES SKIPPED
 maxbudget..  Coste =L= 80000 ; (LHS = 0)
      
 
----- res8  =L=  
+---- resTiempo  =G=  
 
-res8(N,G,Tipo1)..  X(N,G,Tipo1) - 100*Y(N,G,Tipo1) =L= 0 ; (LHS = 0)
+resTiempo(N,G,Tipo1)..  - 10000*Y(N,G,Tipo1) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 0)
      
-res8(N,G,Tipo2)..  X(N,G,Tipo2) - 100*Y(N,G,Tipo2) =L= 0 ; (LHS = 0)
+resTiempo(N,G,Tipo2)..  - 10000*Y(N,G,Tipo2) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 0)
      
-res8(N,D,Tipo1)..  X(N,D,Tipo1) - 100*Y(N,D,Tipo1) =L= 0 ; (LHS = 0)
+resTiempo(N,D,Tipo1)..  - 10000*Y(N,D,Tipo1) - Time(N) + Time(D) =G= -9998 ; (LHS = 0)
      
 REMAINING 41 ENTRIES SKIPPED
 
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 10:41:27 Page 9
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/21/15 16:42:14 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE thecost Using MIP From line 248
+Equation Listing    SOLVE thecost Using MIP From line 249
+
+
+---- res8  =L=  
+
+res8(N,G,Tipo1)..  X(N,G,Tipo1) - 138*Y(N,G,Tipo1) =L= 0 ; (LHS = 0)
+     
+res8(N,G,Tipo2)..  X(N,G,Tipo2) - 115*Y(N,G,Tipo2) =L= 0 ; (LHS = 0)
+     
+res8(N,D,Tipo1)..  X(N,D,Tipo1) - 138*Y(N,D,Tipo1) =L= 0 ; (LHS = 0)
+     
+REMAINING 41 ENTRIES SKIPPED
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 10
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thecost Using MIP From line 249
 
 
 ---- X  numero de vehiculos k de ciudad i a j
@@ -416,7 +448,7 @@ X(N,G,Tipo2)
       -60       FOBJETIVO1
        -1       flujoCoche(N,Tipo2)
         1       flujoCoche(G,Tipo2)
-       -2       cargacapa(N,G,Tipo2)
+       -3       cargacapa(N,G,Tipo2)
         1       res8(N,G,Tipo2)
 
 X(N,D,Tipo1)
@@ -453,24 +485,27 @@ carga(N,D,Tipo1)
         1       cargacapa(N,D,Tipo1)
 
 REMAINING 41 ENTRIES SKIPPED
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 10
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE thecost Using MIP From line 248
+Column Listing      SOLVE thecost Using MIP From line 249
 
 
 ---- Y  uno si vehiculo tipo k viaja de i a j
 
 Y(N,G,Tipo1)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
-     -100       res8(N,G,Tipo1)
+   -10000       resTiempo(N,G,Tipo1)
+     -138       res8(N,G,Tipo1)
 
 Y(N,G,Tipo2)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
-     -100       res8(N,G,Tipo2)
+   -10000       resTiempo(N,G,Tipo2)
+     -115       res8(N,G,Tipo2)
 
 Y(N,D,Tipo1)
                 (.LO, .L, .UP, .M = 0, 0, 1, 0)
-     -100       res8(N,D,Tipo1)
+   -10000       resTiempo(N,D,Tipo1)
+     -138       res8(N,D,Tipo1)
 
 REMAINING 41 ENTRIES SKIPPED
 
@@ -493,6 +528,66 @@ load(D)
 
 REMAINING 4 ENTRIES SKIPPED
 
+---- Time  tiempo en llegar a la ciudad i
+
+Time(N)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -1       resTiempo(N,G,Tipo1)
+       -1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(N,D,Tipo1)
+       -1       resTiempo(N,D,Tipo2)
+       -1       resTiempo(N,T,Tipo1)
+       -1       resTiempo(N,T,Tipo2)
+        1       resTiempo(G,N,Tipo1)
+        1       resTiempo(G,N,Tipo2)
+        1       resTiempo(D,N,Tipo1)
+        1       resTiempo(D,N,Tipo2)
+        1       resTiempo(T,N,Tipo1)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 12
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thecost Using MIP From line 249
+
+
+     Time  tiempo en llegar a la ciudad i
+
+        1       resTiempo(T,N,Tipo2)
+
+Time(G)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       resTiempo(N,G,Tipo1)
+        1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(G,N,Tipo1)
+       -1       resTiempo(G,N,Tipo2)
+       -1       resTiempo(G,D,Tipo1)
+       -1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(G,M,Tipo1)
+       -1       resTiempo(G,M,Tipo2)
+        1       resTiempo(D,G,Tipo1)
+        1       resTiempo(D,G,Tipo2)
+        1       resTiempo(M,G,Tipo1)
+        1       resTiempo(M,G,Tipo2)
+
+Time(D)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+        1       resTiempo(N,D,Tipo1)
+        1       resTiempo(N,D,Tipo2)
+        1       resTiempo(G,D,Tipo1)
+        1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(D,N,Tipo1)
+       -1       resTiempo(D,N,Tipo2)
+       -1       resTiempo(D,G,Tipo1)
+       -1       resTiempo(D,G,Tipo2)
+       -1       resTiempo(D,T,Tipo1)
+       -1       resTiempo(D,T,Tipo2)
+       -1       resTiempo(D,M,Tipo1)
+       -1       resTiempo(D,M,Tipo2)
+        1       resTiempo(T,D,Tipo1)
+        1       resTiempo(T,D,Tipo2)
+        1       resTiempo(M,D,Tipo1)
+        1       resTiempo(M,D,Tipo2)
+
+REMAINING 4 ENTRIES SKIPPED
+
 ---- Coste  Coste total
 
 Coste
@@ -500,39 +595,62 @@ Coste
         1       FOBJETIVO1
         1       maxbudget
 
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 11
+
+---- Equidad  
+
+Equidad
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       FOBJETIVO2(A)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE thecost Using MIP From line 248
+Column Listing      SOLVE thecost Using MIP From line 249
+
+
+     Equidad  
+
+        1       FOBJETIVO2(Z)
+
+
+---- Tiempo  
+
+Tiempo
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       FOBJETIVO3(A)
+        1       FOBJETIVO3(Z)
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 14
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE thecost Using MIP From line 249
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS           8     SINGLE EQUATIONS          119
-BLOCKS OF VARIABLES           5     SINGLE VARIABLES          140
-NON ZERO ELEMENTS           458     DISCRETE VARIABLES         44
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          167
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          149
+NON ZERO ELEMENTS           598     DISCRETE VARIABLES         44
 
 
-GENERATION TIME      =        0.036 SECONDS      4 MB  24.4.2 r51415 DEX-DEG
+GENERATION TIME      =        0.006 SECONDS      4 MB  24.4.2 r51415 DEX-DEG
 
 
-EXECUTION TIME       =        0.037 SECONDS      4 MB  24.4.2 r51415 DEX-DEG
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 12
+EXECUTION TIME       =        0.006 SECONDS      4 MB  24.4.2 r51415 DEX-DEG
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Solution Report     SOLVE thecost Using MIP From line 249
 
 
                S O L V E      S U M M A R Y
 
      MODEL   thecost             OBJECTIVE  Coste
      TYPE    MIP                 DIRECTION  MINIMIZE
-     SOLVER  CPLEX               FROM LINE  248
+     SOLVER  CPLEX               FROM LINE  249
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      1 Optimal                   
-**** OBJECTIVE VALUE            75703.3333
+**** OBJECTIVE VALUE            65579.1667
 
- RESOURCE USAGE, LIMIT          0.013      1000.000
- ITERATION COUNT, LIMIT        93    2000000000
+ RESOURCE USAGE, LIMIT          0.264      1000.000
+ ITERATION COUNT, LIMIT      6637    2000000000
 
 IBM ILOG CPLEX   24.4.2 r51415 Released Mar 15, 2015 DEG x86 64bit/MacOS X    
 Cplex 12.6.1.0
@@ -540,16 +658,16 @@ Cplex 12.6.1.0
 Space for names approximately 0.01 Mb
 Use option 'names no' to turn use of names off
 MIP status(101): integer optimal solution
-Cplex Time: 0.00sec (det. 0.69 ticks)
+Cplex Time: 0.26sec (det. 139.32 ticks)
 Fixing integer variables, and solving final LP...
 Fixed MIP status(1): optimal
-Cplex Time: 0.00sec (det. 0.32 ticks)
+Cplex Time: 0.00sec (det. 0.28 ticks)
 Proven optimal solution.
 
-MIP Solution:        75703.333333    (49 iterations, 0 nodes)
-Final Solve:         75703.333333    (44 iterations)
+MIP Solution:        65579.166667    (6602 iterations, 884 nodes)
+Final Solve:         65579.166667    (35 iterations)
 
-Best possible:       75703.333333
+Best possible:       65579.166667
 Absolute gap:            0.000000
 Relative gap:            0.000000
 
@@ -560,58 +678,76 @@ Relative gap:            0.000000
 
   FOBJETIVO1  restriccion de la funcion objectivo cost
 
+---- EQU FOBJETIVO2  equidad
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+A        -INF             .              .             EPS         
+Z        -INF           -0.7333          .              .          
+
+---- EQU FOBJETIVO3  tiempo
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+A          .              .            +INF            EPS         
+Z          .            11.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 16
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thecost Using MIP From line 249
+
+
 ---- EQU flujoAyuda  lo que sale tiene que ser igual a lo que llega
 
          LOWER          LEVEL          UPPER         MARGINAL
 
 N      -800.0000      -800.0000      -800.0000         EPS         
 G      -500.0000      -500.0000      -500.0000         EPS         
-D          .              .              .            29.1667      
-T          .              .              .           131.2500      
-M          .              .              .           145.8333      
-A          .              .              .           234.5833      
-Z          .              .              .           218.7500      
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 13
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
-
+D          .              .              .            45.0000      
+T          .              .              .           170.0000      
+M          .              .              .           125.0000      
+A          .              .              .           233.3333      
+Z          .              .              .           164.5833      
 
 ---- EQU flujoCoche  lo que sale tiene que ser igual o menor a lo que llega
 
                LOWER          LEVEL          UPPER         MARGINAL
 
-N.Tipo1       -60.0000       -60.0000        +INF          150.0000      
-N.Tipo2       -30.0000       -30.0000        +INF          175.0000      
-G.Tipo1       -55.0000       -55.0000        +INF          150.0000      
-G.Tipo2       -45.0000       -45.0000        +INF          175.0000      
-D.Tipo1       -10.0000       -10.0000        +INF          130.0000      
-D.Tipo2       -15.0000       -15.0000        +INF          151.6667      
-T.Tipo1        -8.0000        -8.0000        +INF           60.0000      
-T.Tipo2       -28.0000       -28.0000        +INF           66.6667      
-M.Tipo1        -5.0000        -5.0000        +INF           50.0000      
-M.Tipo2        -5.0000        -5.0000        +INF           58.3333      
-A.Tipo1          .            96.0000        +INF             .          
-A.Tipo2          .            28.0000        +INF             .          
-Z.Tipo1          .            42.0000        +INF             .          
-Z.Tipo2          .            95.0000        +INF             .          
+N.Tipo1       -60.0000       -60.0000        +INF          148.1250      
+N.Tipo2       -20.0000       -20.0000        +INF          381.2500      
+G.Tipo1       -55.0000       -55.0000        +INF           45.0000      
+G.Tipo2       -40.0000       -40.0000        +INF          175.0000      
+D.Tipo1       -10.0000       -10.0000        +INF           25.0000      
+D.Tipo2       -20.0000       -20.0000        +INF          145.0000      
+T.Tipo1        -8.0000        11.6667        +INF             .          
+T.Tipo2       -30.0000       -30.0000        +INF           40.0000      
+M.Tipo1        -5.0000        10.0000        +INF             .          
+M.Tipo2        -5.0000        -5.0000        +INF           25.0000      
+A.Tipo1          .            48.3333        +INF             .          
+A.Tipo2          .            42.5000        +INF             .          
+Z.Tipo1          .            55.0000        +INF             .          
+Z.Tipo2          .            72.5000        +INF             .          
 
 ---- EQU flow  lo que queda tiene que ser menor que la demanda mas la oferta
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-N        -INF          540.0000       800.0000          .          
-G        -INF          260.0000       500.0000          .          
+N        -INF          650.0000       800.0000          .          
+G        -INF          150.0000       500.0000          .          
 D        -INF             .              .              .          
 T        -INF             .              .              .          
 M        -INF             .              .              .          
 A        -INF          200.0000       750.0000          .          
-Z        -INF          300.0000       300.0000       -15.8333      
+Z        -INF          300.0000       300.0000       -68.7500      
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- EQU demandatot       500.0000       500.0000       500.0000       234.5833      
+---- EQU demandatot       500.0000       500.0000       500.0000       233.3333      
 
   demandatot  lo que llega de A y Z es igual a quinientos
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 17
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thecost Using MIP From line 249
+
 
 ---- EQU cargacapa  la carga tiene que ser menor que lo que podemos transportar
 
@@ -619,179 +755,232 @@ Z        -INF          300.0000       300.0000       -15.8333
 
 N.G.Tipo1        -INF             .              .              .          
 N.G.Tipo2        -INF             .              .              .          
-N.D.Tipo1        -INF             .              .           -26.6667      
-N.D.Tipo2        -INF             .              .           -26.6667      
-N.T.Tipo1        -INF             .              .          -120.0000      
-N.T.Tipo2        -INF             .              .          -120.0000      
+N.D.Tipo1        -INF             .              .           -42.5000      
+N.D.Tipo2        -INF             .              .           -42.5000      
+N.T.Tipo1        -INF             .              .          -158.7500      
+N.T.Tipo2        -INF             .              .          -158.7500      
 G.N.Tipo1        -INF             .              .              .          
 G.N.Tipo2        -INF             .              .              .          
-G.D.Tipo1        -INF             .              .           -26.6667      
-G.D.Tipo2        -INF             .              .           -26.6667      
-G.M.Tipo1        -INF             .              .          -130.8333      
-G.M.Tipo2        -INF             .              .          -130.8333      
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 14
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
-
-
-     EQU cargacapa  la carga tiene que ser menor que lo que podemos transportar
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
-D.N.Tipo1        -INF          -42.0000          .              .          
+G.D.Tipo1        -INF             .              .           -42.5000      
+G.D.Tipo2        -INF             .              .           -42.5000      
+G.M.Tipo1        -INF             .              .          -110.0000      
+G.M.Tipo2        -INF             .              .          -110.0000      
+D.N.Tipo1        -INF             .              .              .          
 D.N.Tipo2        -INF             .              .              .          
-D.G.Tipo1        -INF          -67.5000          .              .          
-D.G.Tipo2        -INF             .              .              .          
-D.T.Tipo1        -INF             .              .           -93.3333      
-D.T.Tipo2        -INF             .              .           -95.0000      
-D.M.Tipo1        -INF             .              .          -106.6667      
-D.M.Tipo2        -INF             .              .          -106.6667      
-T.N.Tipo1        -INF          -68.0000          .              .          
+D.G.Tipo1        -INF          -15.0000          .              .          
+D.G.Tipo2        -INF         -132.5000          .              .          
+D.T.Tipo1        -INF             .              .          -116.2500      
+D.T.Tipo2        -INF             .              .          -116.2500      
+D.M.Tipo1        -INF             .              .           -70.0000      
+D.M.Tipo2        -INF             .              .           -70.0000      
+T.N.Tipo1        -INF             .              .              .          
 T.N.Tipo2        -INF             .              .              .          
 T.D.Tipo1        -INF             .              .              .          
-T.D.Tipo2        -INF             .              .              .          
-T.M.Tipo1        -INF             .              .            -8.3333      
-T.M.Tipo2        -INF             .              .            -8.3333      
-T.A.Tipo1        -INF             .              .           -93.3333      
-T.A.Tipo2        -INF             .              .           -93.3333      
+T.D.Tipo2        -INF          -72.5000          .              .          
+T.M.Tipo1        -INF             .              .              .          
+T.M.Tipo2        -INF             .              .              .          
+T.A.Tipo1        -INF             .              .           -53.3333      
+T.A.Tipo2        -INF             .              .           -53.3333      
 M.G.Tipo1        -INF             .              .              .          
 M.G.Tipo2        -INF             .              .              .          
-M.D.Tipo1        -INF          -64.5000          .              .          
+M.D.Tipo1        -INF             .              .              .          
 M.D.Tipo2        -INF             .              .              .          
-M.T.Tipo1        -INF             .              .              .          
-M.T.Tipo2        -INF             .              .              .          
-M.Z.Tipo1        -INF             .              .           -66.6667      
-M.Z.Tipo2        -INF             .              .           -66.6667      
+M.T.Tipo1        -INF             .              .           -38.7500      
+M.T.Tipo2        -INF             .              .           -38.7500      
+M.Z.Tipo1        -INF             .              .           -33.3333      
+M.Z.Tipo2        -INF             .              .           -33.3333      
 A.T.Tipo1        -INF             .              .              .          
 A.T.Tipo2        -INF             .              .              .          
 A.Z.Tipo1        -INF             .              .              .          
 A.Z.Tipo2        -INF             .              .              .          
-Z.M.Tipo1        -INF          -47.0000          .              .          
+Z.M.Tipo1        -INF             .              .              .          
 Z.M.Tipo2        -INF             .              .              .          
-Z.A.Tipo1        -INF             .              .            -2.0833      
-Z.A.Tipo2        -INF             .              .            -2.0833      
+Z.A.Tipo1        -INF             .              .           -55.0000      
+Z.A.Tipo2        -INF             .              .           -55.0000      
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 18
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thecost Using MIP From line 249
+
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- EQU maxbudget         -INF        75703.3333     80000.0000          .          
+---- EQU maxbudget         -INF        65579.1667     80000.0000          .          
 
   maxbudget  budget maximo
+
+---- EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1     -9997.5000        51.2500        +INF             .          
+N.G.Tipo2     -9997.5000        51.2500        +INF             .          
+N.D.Tipo1     -9998.0000     -9950.0000        +INF             .          
+N.D.Tipo2     -9998.0000     -9950.0000        +INF             .          
+N.T.Tipo1     -9985.0000     -9985.0000        +INF             .          
+N.T.Tipo2     -9985.0000     -9985.0000        +INF            EPS         
+G.N.Tipo1     -9997.5000       -51.2500        +INF             .          
+G.N.Tipo2     -9997.5000       -51.2500        +INF             .          
+G.D.Tipo1     -9998.7500        -1.2500        +INF             .          
+G.D.Tipo2     -9998.7500        -1.2500        +INF             .          
+G.M.Tipo1     -9940.0000     -9940.0000        +INF             .          
+G.M.Tipo2     -9940.0000     -9940.0000        +INF            EPS         
+D.N.Tipo1     -9998.0000       -50.0000        +INF             .          
+D.N.Tipo2     -9998.0000       -50.0000        +INF             .          
+D.G.Tipo1     -9998.7500     -9998.7500        +INF             .          
+D.G.Tipo2     -9998.7500     -9998.7500        +INF            EPS         
+D.T.Tipo1     -9965.0000       -35.0000        +INF             .          
+D.T.Tipo2     -9965.0000       -35.0000        +INF             .          
+D.M.Tipo1     -9960.0000     -9938.7500        +INF             .          
+D.M.Tipo2     -9960.0000        61.2500        +INF             .          
+T.N.Tipo1     -9985.0000       -15.0000        +INF             .          
+T.N.Tipo2     -9985.0000       -15.0000        +INF             .          
+T.D.Tipo1     -9965.0000        35.0000        +INF             .          
+T.D.Tipo2     -9965.0000     -9965.0000        +INF            EPS         
+T.M.Tipo1     -9995.0000     -9903.7500        +INF             .          
+T.M.Tipo2     -9995.0000        96.2500        +INF             .          
+T.A.Tipo1     -9995.5556     -9887.7500        +INF             .          
+T.A.Tipo2     -9995.2941     -9887.7500        +INF             .          
+M.G.Tipo1     -9940.0000       -60.0000        +INF             .          
+M.G.Tipo2     -9940.0000       -60.0000        +INF             .          
+M.D.Tipo1     -9960.0000       -61.2500        +INF             .          
+M.D.Tipo2     -9960.0000       -61.2500        +INF             .          
+M.T.Tipo1     -9995.0000       -96.2500        +INF             .          
+M.T.Tipo2     -9995.0000       -96.2500        +INF             .          
+M.Z.Tipo1     -9995.0000     -9995.0000        +INF             .          
+M.Z.Tipo2     -9995.0000     -9995.0000        +INF            EPS         
+A.T.Tipo1     -9995.5556      -112.2500        +INF             .          
+A.T.Tipo2     -9995.2941      -112.2500        +INF             .          
+A.Z.Tipo1     -9989.0000       -11.0000        +INF             .          
+A.Z.Tipo2     -9989.0000       -11.0000        +INF             .          
+Z.M.Tipo1     -9995.0000        -5.0000        +INF             .          
+Z.M.Tipo2     -9995.0000        -5.0000        +INF             .          
+Z.A.Tipo1     -9989.0000        11.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 19
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thecost Using MIP From line 249
+
+
+     EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2     -9989.0000     -9989.0000        +INF            EPS         
 
 ---- EQU res8  
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1        -INF         -100.0000          .              .          
-N.G.Tipo2        -INF         -100.0000          .              .          
-N.D.Tipo1        -INF             .              .             EPS         
-N.D.Tipo2        -INF          -70.0000          .              .          
-N.T.Tipo1        -INF          -66.6667          .              .          
-N.T.Tipo2        -INF         -100.0000          .              .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 15
+N.G.Tipo1        -INF             .              .              .          
+N.G.Tipo2        -INF             .              .              .          
+N.D.Tipo1        -INF         -138.0000          .              .          
+N.D.Tipo2        -INF         -115.0000          .              .          
+N.T.Tipo1        -INF          -78.0000          .              .          
+N.T.Tipo2        -INF          -95.0000          .              .          
+G.N.Tipo1        -INF             .              .           -63.1250      
+G.N.Tipo2        -INF             .              .          -146.2500      
+G.D.Tipo1        -INF             .              .           -23.7500      
+G.D.Tipo2        -INF             .              .           -67.5000      
+G.M.Tipo1        -INF          -73.0000          .              .          
+G.M.Tipo2        -INF          -30.8333          .              .          
+D.N.Tipo1        -INF             .              .          -103.1250      
+D.N.Tipo2        -INF             .              .          -206.2500      
+D.G.Tipo1        -INF         -128.0000          .              .          
+D.G.Tipo2        -INF          -70.8333          .              .          
+D.T.Tipo1        -INF             .              .           -79.3750      
+D.T.Tipo2        -INF             .              .          -138.7500      
+D.M.Tipo1        -INF         -138.0000          .              .          
+D.M.Tipo2        -INF             .              .              .          
+T.N.Tipo1        -INF             .              .           -58.1250      
+T.N.Tipo2        -INF             .              .          -206.2500      
+T.D.Tipo1        -INF             .              .              .          
+T.D.Tipo2        -INF          -90.8333          .              .          
+T.M.Tipo1        -INF         -138.0000          .              .          
+T.M.Tipo2        -INF             .              .              .          
+T.A.Tipo1        -INF          -89.6667          .              .          
+T.A.Tipo2        -INF          -89.1667          .              .          
+M.G.Tipo1        -INF             .              .              .          
+M.G.Tipo2        -INF             .              .              .          
+M.D.Tipo1        -INF             .              .              .          
+M.D.Tipo2        -INF             .              .              .          
+M.T.Tipo1        -INF             .              .            -8.1250      
+M.T.Tipo2        -INF             .              .           -56.2500      
+M.Z.Tipo1        -INF          -83.0000          .              .          
+M.Z.Tipo2        -INF          -25.8333          .              .          
+A.T.Tipo1        -INF             .              .              .          
+A.T.Tipo2        -INF             .              .              .          
+A.Z.Tipo1        -INF             .              .              .          
+A.Z.Tipo2        -INF             .              .              .          
+Z.M.Tipo1        -INF             .              .              .          
+Z.M.Tipo2        -INF             .              .              .          
+Z.A.Tipo1        -INF             .              .              .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Solution Report     SOLVE thecost Using MIP From line 249
 
 
      EQU res8  
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1        -INF         -100.0000          .              .          
-G.N.Tipo2        -INF         -100.0000          .              .          
-G.D.Tipo1        -INF             .              .              .          
-G.D.Tipo2        -INF          -55.0000          .              .          
-G.M.Tipo1        -INF         -100.0000          .              .          
-G.M.Tipo2        -INF         -100.0000          .              .          
-D.N.Tipo1        -INF          -72.0000          .              .          
-D.N.Tipo2        -INF         -100.0000          .              .          
-D.G.Tipo1        -INF          -55.0000          .              .          
-D.G.Tipo2        -INF         -100.0000          .              .          
-D.T.Tipo1        -INF             .              .             EPS         
-D.T.Tipo2        -INF         -100.0000          .              .          
-D.M.Tipo1        -INF          -20.0000          .              .          
-D.M.Tipo2        -INF          -10.0000          .              .          
-T.N.Tipo1        -INF          -54.6667          .              .          
-T.N.Tipo2        -INF         -100.0000          .              .          
-T.D.Tipo1        -INF         -100.0000          .              .          
-T.D.Tipo2        -INF         -100.0000          .              .          
-T.M.Tipo1        -INF         -100.0000          .              .          
-T.M.Tipo2        -INF         -100.0000          .              .          
-T.A.Tipo1        -INF           -4.0000          .              .          
-T.A.Tipo2        -INF          -72.0000          .              .          
-M.G.Tipo1        -INF         -100.0000          .              .          
-M.G.Tipo2        -INF         -100.0000          .              .          
-M.D.Tipo1        -INF          -57.0000          .              .          
-M.D.Tipo2        -INF         -100.0000          .              .          
-M.T.Tipo1        -INF         -100.0000          .              .          
-M.T.Tipo2        -INF         -100.0000          .              .          
-M.Z.Tipo1        -INF          -26.6667          .              .          
-M.Z.Tipo2        -INF           -5.0000          .              .          
-A.T.Tipo1        -INF         -100.0000          .              .          
-A.T.Tipo2        -INF         -100.0000          .              .          
-A.Z.Tipo1        -INF         -100.0000          .              .          
-A.Z.Tipo2        -INF         -100.0000          .              .          
-Z.M.Tipo1        -INF          -68.6667          .              .          
-Z.M.Tipo2        -INF         -100.0000          .              .          
-Z.A.Tipo1        -INF         -100.0000          .              .          
-Z.A.Tipo2        -INF         -100.0000          .              .          
+Z.A.Tipo2        -INF          -98.3333          .              .          
 
 ---- VAR X  numero de vehiculos k de ciudad i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1          .              .            +INF           40.0000      
-N.G.Tipo2          .              .            +INF           60.0000      
-N.D.Tipo1          .           100.0000        +INF             .          
-N.D.Tipo2          .            30.0000        +INF             .          
-N.T.Tipo1          .            33.3333        +INF             .          
-N.T.Tipo2          .              .            +INF            3.3333      
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 16
+N.G.Tipo1          .              .            +INF          143.1250      
+N.G.Tipo2          .              .            +INF          266.2500      
+N.D.Tipo1          .              .            +INF           79.3750      
+N.D.Tipo2          .              .            +INF          138.7500      
+N.T.Tipo1          .            60.0000        +INF             .          
+N.T.Tipo2          .            20.0000        +INF             .          
+G.N.Tipo1          .              .            +INF             .          
+G.N.Tipo2          .              .            +INF             .          
+G.D.Tipo1          .              .            +INF             .          
+G.D.Tipo2          .              .            +INF             .          
+G.M.Tipo1          .            65.0000        +INF             .          
+G.M.Tipo2          .            84.1667        +INF             .          
+D.N.Tipo1          .              .            +INF             .          
+D.N.Tipo2          .              .            +INF             .          
+D.G.Tipo1          .            10.0000        +INF             .          
+D.G.Tipo2          .            44.1667        +INF             .          
+D.T.Tipo1          .              .            +INF             .          
+D.T.Tipo2          .              .            +INF             .          
+D.M.Tipo1          .              .            +INF             .          
+D.M.Tipo2          .              .            +INF           30.0000      
+T.N.Tipo1          .              .            +INF             .          
+T.N.Tipo2          .              .            +INF             .          
+T.D.Tipo1          .              .            +INF           45.0000      
+T.D.Tipo2          .            24.1667        +INF             .          
+T.M.Tipo1          .              .            +INF           50.0000      
+T.M.Tipo2          .              .            +INF           90.0000      
+T.A.Tipo1          .            48.3333        +INF             .          
+T.A.Tipo2          .            25.8333        +INF             .          
+M.G.Tipo1          .              .            +INF           75.0000      
+M.G.Tipo2          .              .            +INF           30.0000      
+M.D.Tipo1          .              .            +INF           55.0000      
+M.D.Tipo2          .              .            +INF      -1.42109E-14      
+M.T.Tipo1          .              .            +INF             .          
+M.T.Tipo2          .              .            +INF             .          
+M.Z.Tipo1          .            55.0000        +INF             .          
+M.Z.Tipo2          .            89.1667        +INF             .          
+A.T.Tipo1          .              .            +INF           80.0000      
+A.T.Tipo2          .              .            +INF           80.0000      
+A.Z.Tipo1          .              .            +INF          110.0000      
+A.Z.Tipo2          .              .            +INF          165.0000      
+Z.M.Tipo1          .              .            +INF           50.0000      
+Z.M.Tipo2          .              .            +INF           50.0000      
+Z.A.Tipo1          .              .            +INF           27.5000      
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Solution Report     SOLVE thecost Using MIP From line 249
 
 
      VAR X  numero de vehiculos k de ciudad i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1          .              .            +INF           40.0000      
-G.N.Tipo2          .              .            +INF           60.0000      
-G.D.Tipo1          .           100.0000        +INF             .          
-G.D.Tipo2          .            45.0000        +INF             .          
-G.M.Tipo1          .              .            +INF           23.7500      
-G.M.Tipo2          .              .            +INF           35.0000      
-D.N.Tipo1          .            28.0000        +INF             .          
-D.N.Tipo2          .              .            +INF            6.6667      
-D.G.Tipo1          .            45.0000        +INF             .          
-D.G.Tipo2          .              .            +INF            6.6667      
-D.T.Tipo1          .           100.0000        +INF             .          
-D.T.Tipo2          .              .            +INF             .          
-D.M.Tipo1          .            80.0000        +INF             .          
-D.M.Tipo2          .            90.0000        +INF             .          
-T.N.Tipo1          .            45.3333        +INF             .          
-T.N.Tipo2          .              .            +INF           26.6667      
-T.D.Tipo1          .              .            +INF            EPS         
-T.D.Tipo2          .              .            +INF           20.0000      
-T.M.Tipo1          .              .            +INF           47.5000      
-T.M.Tipo2          .              .            +INF           66.6667      
-T.A.Tipo1          .            96.0000        +INF             .          
-T.A.Tipo2          .            28.0000        +INF             .          
-M.G.Tipo1          .              .            +INF           20.0000      
-M.G.Tipo2          .              .            +INF           63.3333      
-M.D.Tipo1          .            43.0000        +INF             .          
-M.D.Tipo2          .              .            +INF           26.6667      
-M.T.Tipo1          .              .            +INF           40.0000      
-M.T.Tipo2          .              .            +INF           66.6667      
-M.Z.Tipo1          .            73.3333        +INF             .          
-M.Z.Tipo2          .            95.0000        +INF             .          
-A.T.Tipo1          .              .            +INF           20.0000      
-A.T.Tipo2          .              .            +INF           53.3333      
-A.Z.Tipo1          .              .            +INF          110.0000      
-A.Z.Tipo2          .              .            +INF          165.0000      
-Z.M.Tipo1          .            31.3333        +INF             .          
-Z.M.Tipo2          .              .            +INF           16.6667      
-Z.A.Tipo1          .              .            +INF          106.8750      
-Z.A.Tipo2          .              .            +INF          160.8333      
+Z.A.Tipo2          .            16.6667        +INF             .          
 
 ---- VAR carga  carga de ciudad i a j con vehiculo tipo k
 
@@ -799,140 +988,145 @@ Z.A.Tipo2          .              .            +INF          160.8333
 
 N.G.Tipo1          .              .            +INF            5.0000      
 N.G.Tipo2          .              .            +INF            5.0000      
-N.D.Tipo1          .           150.0000        +INF             .          
-N.D.Tipo2          .            60.0000        +INF             .          
-N.T.Tipo1          .            50.0000        +INF             .          
-N.T.Tipo2          .              .            +INF             .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 17
+N.D.Tipo1          .              .            +INF             .          
+N.D.Tipo2          .              .            +INF             .          
+N.T.Tipo1          .            90.0000        +INF             .          
+N.T.Tipo2          .            60.0000        +INF             .          
+G.N.Tipo1          .              .            +INF            5.0000      
+G.N.Tipo2          .              .            +INF            5.0000      
+G.D.Tipo1          .              .            +INF             .          
+G.D.Tipo2          .              .            +INF             .          
+G.M.Tipo1          .            97.5000        +INF             .          
+G.M.Tipo2          .           252.5000        +INF             .          
+D.N.Tipo1          .              .            +INF           47.5000      
+D.N.Tipo2          .              .            +INF           47.5000      
+D.G.Tipo1          .              .            +INF           47.5000      
+D.G.Tipo2          .              .            +INF           47.5000      
+D.T.Tipo1          .              .            +INF             .          
+D.T.Tipo2          .              .            +INF             .          
+D.M.Tipo1          .              .            +INF             .          
+D.M.Tipo2          .              .            +INF             .          
+T.N.Tipo1          .              .            +INF          181.2500      
+T.N.Tipo2          .              .            +INF          181.2500      
+T.D.Tipo1          .              .            +INF          133.7500      
+T.D.Tipo2          .              .            +INF          133.7500      
+T.M.Tipo1          .              .            +INF           51.2500      
+T.M.Tipo2          .              .            +INF           51.2500      
+T.A.Tipo1          .            72.5000        +INF             .          
+T.A.Tipo2          .            77.5000        +INF             .          
+M.G.Tipo1          .              .            +INF          140.0000      
+M.G.Tipo2          .              .            +INF          140.0000      
+M.D.Tipo1          .              .            +INF           90.0000      
+M.D.Tipo2          .              .            +INF           90.0000      
+M.T.Tipo1          .              .            +INF             .          
+M.T.Tipo2          .              .            +INF             .          
+M.Z.Tipo1          .            82.5000        +INF             .          
+M.Z.Tipo2          .           267.5000        +INF             .          
+A.T.Tipo1          .              .            +INF           73.3333      
+A.T.Tipo2          .              .            +INF           73.3333      
+A.Z.Tipo1          .              .            +INF           82.5000      
+A.Z.Tipo2          .              .            +INF           82.5000      
+Z.M.Tipo1          .              .            +INF           45.8333      
+Z.M.Tipo2          .              .            +INF           45.8333      
+Z.A.Tipo1          .              .            +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Solution Report     SOLVE thecost Using MIP From line 249
 
 
      VAR carga  carga de ciudad i a j con vehiculo tipo k
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1          .              .            +INF            5.0000      
-G.N.Tipo2          .              .            +INF            5.0000      
-G.D.Tipo1          .           150.0000        +INF             .          
-G.D.Tipo2          .            90.0000        +INF             .          
-G.M.Tipo1          .              .            +INF             .          
-G.M.Tipo2          .              .            +INF             .          
-D.N.Tipo1          .              .            +INF           31.6667      
-D.N.Tipo2          .              .            +INF           31.6667      
-D.G.Tipo1          .              .            +INF           31.6667      
-D.G.Tipo2          .              .            +INF           31.6667      
-D.T.Tipo1          .           150.0000        +INF             .          
-D.T.Tipo2          .              .            +INF            1.6667      
-D.M.Tipo1          .           120.0000        +INF             .          
-D.M.Tipo2          .           180.0000        +INF             .          
-T.N.Tipo1          .              .            +INF          142.5000      
-T.N.Tipo2          .              .            +INF          142.5000      
-T.D.Tipo1          .              .            +INF          110.8333      
-T.D.Tipo2          .              .            +INF          110.8333      
-T.M.Tipo1          .              .            +INF             .          
-T.M.Tipo2          .              .            +INF             .          
-T.A.Tipo1          .           144.0000        +INF             .          
-T.A.Tipo2          .            56.0000        +INF             .          
-M.G.Tipo1          .              .            +INF          160.8333      
-M.G.Tipo2          .              .            +INF          160.8333      
-M.D.Tipo1          .              .            +INF          126.6667      
-M.D.Tipo2          .              .            +INF          126.6667      
-M.T.Tipo1          .              .            +INF           20.8333      
-M.T.Tipo2          .              .            +INF           20.8333      
-M.Z.Tipo1          .           110.0000        +INF             .          
-M.Z.Tipo2          .           190.0000        +INF             .          
-A.T.Tipo1          .              .            +INF          113.3333      
-A.T.Tipo2          .              .            +INF          113.3333      
-A.Z.Tipo1          .              .            +INF           29.5833      
-A.Z.Tipo2          .              .            +INF           29.5833      
-Z.M.Tipo1          .              .            +INF           79.1667      
-Z.M.Tipo2          .              .            +INF           79.1667      
-Z.A.Tipo1          .              .            +INF             .          
-Z.A.Tipo2          .              .            +INF             .          
+Z.A.Tipo2          .            50.0000        +INF             .          
 
 ---- VAR Y  uno si vehiculo tipo k viaja de i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1          .             1.0000         1.0000         EPS         
-N.G.Tipo2          .             1.0000         1.0000         EPS         
+N.G.Tipo1          .              .             1.0000         EPS         
+N.G.Tipo2          .              .             1.0000         EPS         
 N.D.Tipo1          .             1.0000         1.0000         EPS         
 N.D.Tipo2          .             1.0000         1.0000         EPS         
 N.T.Tipo1          .             1.0000         1.0000         EPS         
 N.T.Tipo2          .             1.0000         1.0000         EPS         
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 18
+G.N.Tipo1          .              .             1.0000     -8711.2500      
+G.N.Tipo2          .              .             1.0000    -16818.7500      
+G.D.Tipo1          .              .             1.0000     -3277.5000      
+G.D.Tipo2          .              .             1.0000     -7762.5000      
+G.M.Tipo1          .             1.0000         1.0000         EPS         
+G.M.Tipo2          .             1.0000         1.0000         EPS         
+D.N.Tipo1          .              .             1.0000    -14231.2500      
+D.N.Tipo2          .              .             1.0000    -23718.7500      
+D.G.Tipo1          .             1.0000         1.0000         EPS         
+D.G.Tipo2          .             1.0000         1.0000         EPS         
+D.T.Tipo1          .              .             1.0000    -10953.7500      
+D.T.Tipo2          .              .             1.0000    -15956.2500      
+D.M.Tipo1          .             1.0000         1.0000         EPS         
+D.M.Tipo2          .              .             1.0000         EPS         
+T.N.Tipo1          .              .             1.0000     -8021.2500      
+T.N.Tipo2          .              .             1.0000    -23718.7500      
+T.D.Tipo1          .              .             1.0000         EPS         
+T.D.Tipo2          .             1.0000         1.0000         EPS         
+T.M.Tipo1          .             1.0000         1.0000         EPS         
+T.M.Tipo2          .              .             1.0000         EPS         
+T.A.Tipo1          .             1.0000         1.0000         EPS         
+T.A.Tipo2          .             1.0000         1.0000         EPS         
+M.G.Tipo1          .              .             1.0000         EPS         
+M.G.Tipo2          .              .             1.0000         EPS         
+M.D.Tipo1          .              .             1.0000         EPS         
+M.D.Tipo2          .              .             1.0000         EPS         
+M.T.Tipo1          .              .             1.0000     -1121.2500      
+M.T.Tipo2          .              .             1.0000     -6468.7500      
+M.Z.Tipo1          .             1.0000         1.0000         EPS         
+M.Z.Tipo2          .             1.0000         1.0000         EPS         
+A.T.Tipo1          .              .             1.0000         EPS         
+A.T.Tipo2          .              .             1.0000         EPS         
+A.Z.Tipo1          .              .             1.0000         EPS         
+A.Z.Tipo2          .              .             1.0000         EPS         
+Z.M.Tipo1          .              .             1.0000         EPS         
+Z.M.Tipo2          .              .             1.0000         EPS         
+Z.A.Tipo1          .              .             1.0000         EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Solution Report     SOLVE thecost Using MIP From line 249
 
 
      VAR Y  uno si vehiculo tipo k viaja de i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1          .             1.0000         1.0000         EPS         
-G.N.Tipo2          .             1.0000         1.0000         EPS         
-G.D.Tipo1          .             1.0000         1.0000         EPS         
-G.D.Tipo2          .             1.0000         1.0000         EPS         
-G.M.Tipo1          .             1.0000         1.0000         EPS         
-G.M.Tipo2          .             1.0000         1.0000         EPS         
-D.N.Tipo1          .             1.0000         1.0000         EPS         
-D.N.Tipo2          .             1.0000         1.0000         EPS         
-D.G.Tipo1          .             1.0000         1.0000         EPS         
-D.G.Tipo2          .             1.0000         1.0000         EPS         
-D.T.Tipo1          .             1.0000         1.0000         EPS         
-D.T.Tipo2          .             1.0000         1.0000         EPS         
-D.M.Tipo1          .             1.0000         1.0000         EPS         
-D.M.Tipo2          .             1.0000         1.0000         EPS         
-T.N.Tipo1          .             1.0000         1.0000         EPS         
-T.N.Tipo2          .             1.0000         1.0000         EPS         
-T.D.Tipo1          .             1.0000         1.0000         EPS         
-T.D.Tipo2          .             1.0000         1.0000         EPS         
-T.M.Tipo1          .             1.0000         1.0000         EPS         
-T.M.Tipo2          .             1.0000         1.0000         EPS         
-T.A.Tipo1          .             1.0000         1.0000         EPS         
-T.A.Tipo2          .             1.0000         1.0000         EPS         
-M.G.Tipo1          .             1.0000         1.0000         EPS         
-M.G.Tipo2          .             1.0000         1.0000         EPS         
-M.D.Tipo1          .             1.0000         1.0000         EPS         
-M.D.Tipo2          .             1.0000         1.0000         EPS         
-M.T.Tipo1          .             1.0000         1.0000         EPS         
-M.T.Tipo2          .             1.0000         1.0000         EPS         
-M.Z.Tipo1          .             1.0000         1.0000         EPS         
-M.Z.Tipo2          .             1.0000         1.0000         EPS         
-A.T.Tipo1          .             1.0000         1.0000         EPS         
-A.T.Tipo2          .             1.0000         1.0000         EPS         
-A.Z.Tipo1          .             1.0000         1.0000         EPS         
-A.Z.Tipo2          .             1.0000         1.0000         EPS         
-Z.M.Tipo1          .             1.0000         1.0000         EPS         
-Z.M.Tipo2          .             1.0000         1.0000         EPS         
-Z.A.Tipo1          .             1.0000         1.0000         EPS         
 Z.A.Tipo2          .             1.0000         1.0000         EPS         
 
 ---- VAR load  cantidad de carga que se queda en i
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-N          .           540.0000        +INF             .          
-G          .           260.0000        +INF             .          
-D          .              .            +INF           29.1667      
-T          .              .            +INF          131.2500      
-M          .              .            +INF          145.8333      
+N          .           650.0000        +INF             .          
+G          .           150.0000        +INF             .          
+D          .              .            +INF           45.0000      
+T          .              .            +INF          170.0000      
+M          .              .            +INF          125.0000      
 A          .           200.0000        +INF             .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 19
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE thecost Using MIP From line 248
+Z          .           300.0000        +INF             .          
 
-
-     VAR load  cantidad de carga que se queda en i
+---- VAR Time  tiempo en llegar a la ciudad i
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-Z          .           300.0000        +INF             .          
+N          .              .            +INF            EPS         
+G          .            51.2500        +INF             .          
+D          .            50.0000        +INF             .          
+T          .            15.0000        +INF             .          
+M          .           111.2500        +INF             .          
+A          .           127.2500        +INF             .          
+Z          .           116.2500        +INF             .          
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
----- VAR Coste             -INF        75703.3333        +INF             .          
+---- VAR Coste             -INF        65579.1667        +INF             .          
+---- VAR Equidad           -INF            0.2667        +INF             .          
+---- VAR Tiempo            -INF          127.2500        +INF             .          
 
   Coste  Coste total
 
@@ -940,16 +1134,42 @@ Z          .           300.0000        +INF             .
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 20
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE theequality Using MIP From line 251
+Equation Listing    SOLVE theequality Using MIP From line 253
 
+
+---- FOBJETIVO1  =E=  restriccion de la funcion objectivo cost
+
+FOBJETIVO1..  - 40*X(N,G,Tipo1) - 60*X(N,G,Tipo2) - 20*X(N,D,Tipo1) - 30*X(N,D,Tipo2) - 90*X(N,T,Tipo1) - 135*X(N,T,Tipo2) - 40*X(G,N,Tipo1) - 60*X(G,N,Tipo2) - 20*X(G,D,Tipo1) - 30*X(G,D,Tipo2) - 120*X(G,M,Tipo1) - 180*X(G,M,Tipo2) - 20*X(D,N,Tipo1)
+     
+      - 30*X(D,N,Tipo2) - 20*X(D,G,Tipo1) - 30*X(D,G,Tipo2) - 70*X(D,T,Tipo1) - 105*X(D,T,Tipo2) - 80*X(D,M,Tipo1) - 120*X(D,M,Tipo2) - 90*X(T,N,Tipo1) - 135*X(T,N,Tipo2) - 70*X(T,D,Tipo1) - 105*X(T,D,Tipo2) - 50*X(T,M,Tipo1) - 75*X(T,M,Tipo2)
+     
+      - 80*X(T,A,Tipo1) - 120*X(T,A,Tipo2) - 120*X(M,G,Tipo1) - 180*X(M,G,Tipo2) - 80*X(M,D,Tipo1) - 120*X(M,D,Tipo2) - 50*X(M,T,Tipo1) - 75*X(M,T,Tipo2) - 50*X(M,Z,Tipo1) - 75*X(M,Z,Tipo2) - 80*X(A,T,Tipo1) - 120*X(A,T,Tipo2) - 110*X(A,Z,Tipo1)
+     
+      - 165*X(A,Z,Tipo2) - 50*X(Z,M,Tipo1) - 75*X(Z,M,Tipo2) - 110*X(Z,A,Tipo1) - 165*X(Z,A,Tipo2) - 5*carga(N,G,Tipo1) - 5*carga(N,G,Tipo2) - 2.5*carga(N,D,Tipo1) - 2.5*carga(N,D,Tipo2) - 11.25*carga(N,T,Tipo1) - 11.25*carga(N,T,Tipo2)
+     
+      - 5*carga(G,N,Tipo1) - 5*carga(G,N,Tipo2) - 2.5*carga(G,D,Tipo1) - 2.5*carga(G,D,Tipo2) - 15*carga(G,M,Tipo1) - 15*carga(G,M,Tipo2) - 2.5*carga(D,N,Tipo1) - 2.5*carga(D,N,Tipo2) - 2.5*carga(D,G,Tipo1) - 2.5*carga(D,G,Tipo2) - 8.75*carga(D,T,Tipo1)
+     
+      - 8.75*carga(D,T,Tipo2) - 10*carga(D,M,Tipo1) - 10*carga(D,M,Tipo2) - 11.25*carga(T,N,Tipo1) - 11.25*carga(T,N,Tipo2) - 8.75*carga(T,D,Tipo1) - 8.75*carga(T,D,Tipo2) - 6.25*carga(T,M,Tipo1) - 6.25*carga(T,M,Tipo2) - 10*carga(T,A,Tipo1)
+     
+      - 10*carga(T,A,Tipo2) - 15*carga(M,G,Tipo1) - 15*carga(M,G,Tipo2) - 10*carga(M,D,Tipo1) - 10*carga(M,D,Tipo2) - 6.25*carga(M,T,Tipo1) - 6.25*carga(M,T,Tipo2) - 6.25*carga(M,Z,Tipo1) - 6.25*carga(M,Z,Tipo2) - 10*carga(A,T,Tipo1) - 10*carga(A,T,Tipo2)
+     
+      - 13.75*carga(A,Z,Tipo1) - 13.75*carga(A,Z,Tipo2) - 6.25*carga(Z,M,Tipo1) - 6.25*carga(Z,M,Tipo2) - 13.75*carga(Z,A,Tipo1) - 13.75*carga(Z,A,Tipo2) + Coste =E= 0 ; (LHS = 1.45519152283669E-11, INFES = 1.45519152283669E-11 ****)
+     
 
 ---- FOBJETIVO2  =L=  equidad
 
-FOBJETIVO2(A)..  - 0.00133333333333333*load(A) + Equidad =L= 0 ; (LHS = -0.266666666666667)
+FOBJETIVO2(A)..  - 0.00133333333333333*load(A) + Equidad =L= 0 ; (LHS = 0)
      
-FOBJETIVO2(Z)..  - 0.00333333333333333*load(Z) + Equidad =L= 0 ; (LHS = -1)
+FOBJETIVO2(Z)..  - 0.00333333333333333*load(Z) + Equidad =L= 0 ; (LHS = -0.733333333333333)
+     
+
+---- FOBJETIVO3  =G=  tiempo
+
+FOBJETIVO3(A)..  - Time(A) + Tiempo =G= 0 ; (LHS = 0)
+     
+FOBJETIVO3(Z)..  - Time(Z) + Tiempo =G= 0 ; (LHS = 11)
      
 
 ---- flujoAyuda  =E=  lo que sale tiene que ser igual a lo que llega
@@ -969,9 +1189,16 @@ REMAINING 4 ENTRIES SKIPPED
 
 ---- flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
 
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 25
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE theequality Using MIP From line 253
+
+
+     flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
+
 flujoCoche(N,Tipo1)..  - X(N,G,Tipo1) - X(N,D,Tipo1) - X(N,T,Tipo1) + X(G,N,Tipo1) + X(D,N,Tipo1) + X(T,N,Tipo1) =G= -60 ; (LHS = -60)
      
-flujoCoche(N,Tipo2)..  - X(N,G,Tipo2) - X(N,D,Tipo2) - X(N,T,Tipo2) + X(G,N,Tipo2) + X(D,N,Tipo2) + X(T,N,Tipo2) =G= -30 ; (LHS = -30)
+flujoCoche(N,Tipo2)..  - X(N,G,Tipo2) - X(N,D,Tipo2) - X(N,T,Tipo2) + X(G,N,Tipo2) + X(D,N,Tipo2) + X(T,N,Tipo2) =G= -20 ; (LHS = -20)
      
 flujoCoche(G,Tipo1)..  X(N,G,Tipo1) - X(G,N,Tipo1) - X(G,D,Tipo1) - X(G,M,Tipo1) + X(D,G,Tipo1) + X(M,G,Tipo1) =G= -55 ; (LHS = -55)
      
@@ -980,9 +1207,9 @@ REMAINING 11 ENTRIES SKIPPED
 
 ---- flow  =L=  lo que queda tiene que ser menor que la demanda mas la oferta
 
-flow(N)..  load(N) =L= 800 ; (LHS = 540)
+flow(N)..  load(N) =L= 800 ; (LHS = 650)
      
-flow(G)..  load(G) =L= 500 ; (LHS = 260)
+flow(G)..  load(G) =L= 500 ; (LHS = 150)
      
 flow(D)..  load(D) =L= 0 ; (LHS = 0)
      
@@ -993,16 +1220,12 @@ REMAINING 4 ENTRIES SKIPPED
 
 demandatot..  load(A) + load(Z) =E= 500 ; (LHS = 500)
      
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 21
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Equation Listing    SOLVE theequality Using MIP From line 251
-
 
 ---- cargacapa  =L=  la carga tiene que ser menor que lo que podemos transportar
 
 cargacapa(N,G,Tipo1)..  - 1.5*X(N,G,Tipo1) + carga(N,G,Tipo1) =L= 0 ; (LHS = 0)
      
-cargacapa(N,G,Tipo2)..  - 2*X(N,G,Tipo2) + carga(N,G,Tipo2) =L= 0 ; (LHS = 0)
+cargacapa(N,G,Tipo2)..  - 3*X(N,G,Tipo2) + carga(N,G,Tipo2) =L= 0 ; (LHS = 0)
      
 cargacapa(N,D,Tipo1)..  - 1.5*X(N,D,Tipo1) + carga(N,D,Tipo1) =L= 0 ; (LHS = 0)
      
@@ -1011,42 +1234,60 @@ REMAINING 41 ENTRIES SKIPPED
 
 ---- maxbudget  =L=  budget maximo
 
-maxbudget..  Coste =L= 80000 ; (LHS = 75703.3333333333)
+maxbudget..  Coste =L= 80000 ; (LHS = 65579.1666666667)
      
 
----- res8  =L=  
+---- resTiempo  =G=  
 
-res8(N,G,Tipo1)..  X(N,G,Tipo1) - 100*Y(N,G,Tipo1) =L= 0 ; (LHS = -100)
+resTiempo(N,G,Tipo1)..  - 10000*Y(N,G,Tipo1) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 51.25)
      
-res8(N,G,Tipo2)..  X(N,G,Tipo2) - 100*Y(N,G,Tipo2) =L= 0 ; (LHS = -100)
+resTiempo(N,G,Tipo2)..  - 10000*Y(N,G,Tipo2) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 51.25)
      
-res8(N,D,Tipo1)..  X(N,D,Tipo1) - 100*Y(N,D,Tipo1) =L= 0 ; (LHS = 0)
+resTiempo(N,D,Tipo1)..  - 10000*Y(N,D,Tipo1) - Time(N) + Time(D) =G= -9998 ; (LHS = -9950)
      
 REMAINING 41 ENTRIES SKIPPED
 
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 22
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE theequality Using MIP From line 251
+Equation Listing    SOLVE theequality Using MIP From line 253
+
+
+---- res8  =L=  
+
+res8(N,G,Tipo1)..  X(N,G,Tipo1) - 138*Y(N,G,Tipo1) =L= 0 ; (LHS = 0)
+     
+res8(N,G,Tipo2)..  X(N,G,Tipo2) - 115*Y(N,G,Tipo2) =L= 0 ; (LHS = 0)
+     
+res8(N,D,Tipo1)..  X(N,D,Tipo1) - 138*Y(N,D,Tipo1) =L= 0 ; (LHS = -138)
+     
+REMAINING 41 ENTRIES SKIPPED
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 27
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE theequality Using MIP From line 253
 
 
 ---- X  numero de vehiculos k de ciudad i a j
 
 X(N,G,Tipo1)
-                (.LO, .L, .UP, .M = 0, 0, +INF, 40)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 143.125)
+      -40       FOBJETIVO1
        -1       flujoCoche(N,Tipo1)
         1       flujoCoche(G,Tipo1)
        -1.5     cargacapa(N,G,Tipo1)
         1       res8(N,G,Tipo1)
 
 X(N,G,Tipo2)
-                (.LO, .L, .UP, .M = 0, 0, +INF, 60)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 266.25)
+      -60       FOBJETIVO1
        -1       flujoCoche(N,Tipo2)
         1       flujoCoche(G,Tipo2)
-       -2       cargacapa(N,G,Tipo2)
+       -3       cargacapa(N,G,Tipo2)
         1       res8(N,G,Tipo2)
 
 X(N,D,Tipo1)
-                (.LO, .L, .UP, .M = 0, 100, +INF, 0)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 79.375)
+      -20       FOBJETIVO1
        -1       flujoCoche(N,Tipo1)
         1       flujoCoche(D,Tipo1)
        -1.5     cargacapa(N,D,Tipo1)
@@ -1058,113 +1299,192 @@ REMAINING 41 ENTRIES SKIPPED
 
 carga(N,G,Tipo1)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 5)
+       -5       FOBJETIVO1
        -1       flujoAyuda(N)
         1       flujoAyuda(G)
         1       cargacapa(N,G,Tipo1)
 
 carga(N,G,Tipo2)
                 (.LO, .L, .UP, .M = 0, 0, +INF, 5)
+       -5       FOBJETIVO1
        -1       flujoAyuda(N)
         1       flujoAyuda(G)
         1       cargacapa(N,G,Tipo2)
 
 carga(N,D,Tipo1)
-                (.LO, .L, .UP, .M = 0, 150, +INF, 0)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2.5     FOBJETIVO1
        -1       flujoAyuda(N)
         1       flujoAyuda(D)
         1       cargacapa(N,D,Tipo1)
 
 REMAINING 41 ENTRIES SKIPPED
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 28
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE theequality Using MIP From line 253
+
 
 ---- Y  uno si vehiculo tipo k viaja de i a j
 
 Y(N,G,Tipo1)
-                (.LO, .L, .UP, .M = 0, 1, 1, EPS)
-     -100       res8(N,G,Tipo1)
-
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 23
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Column Listing      SOLVE theequality Using MIP From line 251
-
-
-     Y  uno si vehiculo tipo k viaja de i a j
+                (.LO, .L, .UP, .M = 0, 0, 1, EPS)
+   -10000       resTiempo(N,G,Tipo1)
+     -138       res8(N,G,Tipo1)
 
 Y(N,G,Tipo2)
-                (.LO, .L, .UP, .M = 0, 1, 1, EPS)
-     -100       res8(N,G,Tipo2)
+                (.LO, .L, .UP, .M = 0, 0, 1, EPS)
+   -10000       resTiempo(N,G,Tipo2)
+     -115       res8(N,G,Tipo2)
 
 Y(N,D,Tipo1)
                 (.LO, .L, .UP, .M = 0, 1, 1, EPS)
-     -100       res8(N,D,Tipo1)
+   -10000       resTiempo(N,D,Tipo1)
+     -138       res8(N,D,Tipo1)
 
 REMAINING 41 ENTRIES SKIPPED
 
 ---- load  cantidad de carga que se queda en i
 
 load(N)
-                (.LO, .L, .UP, .M = 0, 540, +INF, 0)
+                (.LO, .L, .UP, .M = 0, 650, +INF, 0)
        -1       flujoAyuda(N)
         1       flow(N)
 
 load(G)
-                (.LO, .L, .UP, .M = 0, 260, +INF, 0)
+                (.LO, .L, .UP, .M = 0, 150, +INF, 0)
        -1       flujoAyuda(G)
         1       flow(G)
 
 load(D)
-                (.LO, .L, .UP, .M = 0, 0, +INF, 29.1666666666667)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 45)
        -1       flujoAyuda(D)
         1       flow(D)
+
+REMAINING 4 ENTRIES SKIPPED
+
+---- Time  tiempo en llegar a la ciudad i
+
+Time(N)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+       -1       resTiempo(N,G,Tipo1)
+       -1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(N,D,Tipo1)
+       -1       resTiempo(N,D,Tipo2)
+       -1       resTiempo(N,T,Tipo1)
+       -1       resTiempo(N,T,Tipo2)
+        1       resTiempo(G,N,Tipo1)
+        1       resTiempo(G,N,Tipo2)
+        1       resTiempo(D,N,Tipo1)
+        1       resTiempo(D,N,Tipo2)
+        1       resTiempo(T,N,Tipo1)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 29
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE theequality Using MIP From line 253
+
+
+     Time  tiempo en llegar a la ciudad i
+
+        1       resTiempo(T,N,Tipo2)
+
+Time(G)
+                (.LO, .L, .UP, .M = 0, 51.25, +INF, 0)
+        1       resTiempo(N,G,Tipo1)
+        1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(G,N,Tipo1)
+       -1       resTiempo(G,N,Tipo2)
+       -1       resTiempo(G,D,Tipo1)
+       -1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(G,M,Tipo1)
+       -1       resTiempo(G,M,Tipo2)
+        1       resTiempo(D,G,Tipo1)
+        1       resTiempo(D,G,Tipo2)
+        1       resTiempo(M,G,Tipo1)
+        1       resTiempo(M,G,Tipo2)
+
+Time(D)
+                (.LO, .L, .UP, .M = 0, 50, +INF, 0)
+        1       resTiempo(N,D,Tipo1)
+        1       resTiempo(N,D,Tipo2)
+        1       resTiempo(G,D,Tipo1)
+        1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(D,N,Tipo1)
+       -1       resTiempo(D,N,Tipo2)
+       -1       resTiempo(D,G,Tipo1)
+       -1       resTiempo(D,G,Tipo2)
+       -1       resTiempo(D,T,Tipo1)
+       -1       resTiempo(D,T,Tipo2)
+       -1       resTiempo(D,M,Tipo1)
+       -1       resTiempo(D,M,Tipo2)
+        1       resTiempo(T,D,Tipo1)
+        1       resTiempo(T,D,Tipo2)
+        1       resTiempo(M,D,Tipo1)
+        1       resTiempo(M,D,Tipo2)
 
 REMAINING 4 ENTRIES SKIPPED
 
 ---- Coste  Coste total
 
 Coste
-                (.LO, .L, .UP, .M = -INF, 75703.3333333333, +INF, 0)
+                (.LO, .L, .UP, .M = -INF, 65579.1666666667, +INF, 0)
+        1       FOBJETIVO1
         1       maxbudget
 
 
 ---- Equidad  
 
 Equidad
-                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+                (.LO, .L, .UP, .M = -INF, 0.266666666666667, +INF, 0)
         1       FOBJETIVO2(A)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 30
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE theequality Using MIP From line 253
+
+
+     Equidad  
+
         1       FOBJETIVO2(Z)
 
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 24
+
+---- Tiempo  
+
+Tiempo
+                (.LO, .L, .UP, .M = -INF, 127.25, +INF, 0)
+        1       FOBJETIVO3(A)
+        1       FOBJETIVO3(Z)
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Model Statistics    SOLVE theequality Using MIP From line 251
+Model Statistics    SOLVE theequality Using MIP From line 253
 
 
 MODEL STATISTICS
 
-BLOCKS OF EQUATIONS           8     SINGLE EQUATIONS          120
-BLOCKS OF VARIABLES           6     SINGLE VARIABLES          141
-NON ZERO ELEMENTS           373     DISCRETE VARIABLES         44
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          167
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          149
+NON ZERO ELEMENTS           598     DISCRETE VARIABLES         44
 
 
-GENERATION TIME      =        0.007 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+GENERATION TIME      =        0.006 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
 
 
-EXECUTION TIME       =        0.011 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 25
+EXECUTION TIME       =        0.010 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
+Solution Report     SOLVE theequality Using MIP From line 253
 
 
                S O L V E      S U M M A R Y
 
      MODEL   theequality         OBJECTIVE  Equidad
      TYPE    MIP                 DIRECTION  MAXIMIZE
-     SOLVER  CPLEX               FROM LINE  251
+     SOLVER  CPLEX               FROM LINE  253
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      1 Optimal                   
 **** OBJECTIVE VALUE                0.4762
 
- RESOURCE USAGE, LIMIT          0.014      1000.000
- ITERATION COUNT, LIMIT        55    2000000000
+ RESOURCE USAGE, LIMIT          0.060      1000.000
+ ITERATION COUNT, LIMIT       658    2000000000
 
 IBM ILOG CPLEX   24.4.2 r51415 Released Mar 15, 2015 DEG x86 64bit/MacOS X    
 Cplex 12.6.1.0
@@ -1172,19 +1492,25 @@ Cplex 12.6.1.0
 Space for names approximately 0.01 Mb
 Use option 'names no' to turn use of names off
 MIP status(101): integer optimal solution
-Cplex Time: 0.00sec (det. 0.48 ticks)
+Cplex Time: 0.05sec (det. 23.39 ticks)
 Fixing integer variables, and solving final LP...
 Fixed MIP status(1): optimal
-Cplex Time: 0.00sec (det. 0.23 ticks)
+Cplex Time: 0.00sec (det. 0.30 ticks)
 Proven optimal solution.
 
-MIP Solution:            0.476190    (31 iterations, 0 nodes)
-Final Solve:             0.476190    (24 iterations)
+MIP Solution:            0.476190    (625 iterations, 40 nodes)
+Final Solve:             0.476190    (33 iterations)
 
 Best possible:           0.476190
 Absolute gap:            0.000000
 Relative gap:            0.000000
 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU FOBJETIVO1          .              .              .             EPS         
+
+  FOBJETIVO1  restriccion de la funcion objectivo cost
 
 ---- EQU FOBJETIVO2  equidad
 
@@ -1192,6 +1518,17 @@ Relative gap:            0.000000
 
 A        -INF             .              .             0.7143      
 Z        -INF             .              .             0.2857      
+
+---- EQU FOBJETIVO3  tiempo
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+A          .              .            +INF            EPS         
+Z          .            11.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 33
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE theequality Using MIP From line 253
+
 
 ---- EQU flujoAyuda  lo que sale tiene que ser igual a lo que llega
 
@@ -1204,36 +1541,32 @@ T          .              .              .             EPS
 M          .              .              .             EPS         
 A          .              .              .             EPS         
 Z          .              .              .             EPS         
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 26
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
-
 
 ---- EQU flujoCoche  lo que sale tiene que ser igual o menor a lo que llega
 
                LOWER          LEVEL          UPPER         MARGINAL
 
 N.Tipo1       -60.0000       -60.0000        +INF            EPS         
-N.Tipo2       -30.0000       -30.0000        +INF            EPS         
+N.Tipo2       -20.0000       -17.6824        +INF             .          
 G.Tipo1       -55.0000       -55.0000        +INF            EPS         
-G.Tipo2       -45.0000       -45.0000        +INF            EPS         
+G.Tipo2       -40.0000       -40.0000        +INF            EPS         
 D.Tipo1       -10.0000       -10.0000        +INF            EPS         
-D.Tipo2       -15.0000       -15.0000        +INF            EPS         
-T.Tipo1        -8.0000        -8.0000        +INF            EPS         
-T.Tipo2       -28.0000       -10.0000        +INF             .          
-M.Tipo1        -5.0000        -5.0000        +INF            EPS         
-M.Tipo2        -5.0000          .            +INF             .          
-A.Tipo1          .           138.0000        +INF             .          
-A.Tipo2          .           100.0000        +INF             .          
-Z.Tipo1          .              .            +INF             .          
-Z.Tipo2          .              .            +INF             .          
+D.Tipo2       -20.0000       -20.0000        +INF            EPS         
+T.Tipo1        -8.0000         7.0314        +INF             .          
+T.Tipo2       -30.0000       -30.0000        +INF            EPS         
+M.Tipo1        -5.0000        10.0000        +INF             .          
+M.Tipo2        -5.0000        -5.0000        +INF            EPS         
+A.Tipo1          .            12.7305        +INF             .          
+A.Tipo2          .           112.6824        +INF             .          
+Z.Tipo1          .            95.2381        +INF             .          
+Z.Tipo2          .              .            +INF            EPS         
 
 ---- EQU flow  lo que queda tiene que ser menor que la demanda mas la oferta
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-N        -INF          450.0000       800.0000          .          
-G        -INF          350.0000       500.0000          .          
+N        -INF          656.9528       800.0000          .          
+G        -INF          143.0472       500.0000          .          
 D        -INF             .              .              .          
 T        -INF             .              .              .          
 M        -INF             .              .              .          
@@ -1245,64 +1578,63 @@ Z        -INF          142.8571       300.0000          .
 ---- EQU demandatot       500.0000       500.0000       500.0000         0.0010      
 
   demandatot  lo que llega de A y Z es igual a quinientos
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 34
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE theequality Using MIP From line 253
+
 
 ---- EQU cargacapa  la carga tiene que ser menor que lo que podemos transportar
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1        -INF          -67.5000          .              .          
-N.G.Tipo2        -INF             .              .             EPS         
-N.D.Tipo1        -INF             .              .              .          
-N.D.Tipo2        -INF             .              .              .          
+N.G.Tipo1        -INF             .              .              .          
+N.G.Tipo2        -INF             .              .              .          
+N.D.Tipo1        -INF             .              .             EPS         
+N.D.Tipo2        -INF             .              .             EPS         
 N.T.Tipo1        -INF             .              .             EPS         
 N.T.Tipo2        -INF             .              .             EPS         
 G.N.Tipo1        -INF             .              .              .          
-G.N.Tipo2        -INF          -90.0000          .              .          
+G.N.Tipo2        -INF             .              .              .          
 G.D.Tipo1        -INF             .              .              .          
 G.D.Tipo2        -INF             .              .              .          
 G.M.Tipo1        -INF             .              .             EPS         
-G.M.Tipo2        -INF             .              .              .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 27
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
-
-
-     EQU cargacapa  la carga tiene que ser menor que lo que podemos transportar
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
-D.N.Tipo1        -INF          -15.0000          .              .          
-D.N.Tipo2        -INF          -30.0000          .              .          
-D.G.Tipo1        -INF             .              .              .          
-D.G.Tipo2        -INF             .              .              .          
+G.M.Tipo2        -INF             .              .             EPS         
+D.N.Tipo1        -INF             .              .              .          
+D.N.Tipo2        -INF             .              .              .          
+D.G.Tipo1        -INF          -94.4528          .              .          
+D.G.Tipo2        -INF          -60.0000          .              .          
 D.T.Tipo1        -INF             .              .              .          
 D.T.Tipo2        -INF             .              .              .          
-D.M.Tipo1        -INF             .              .              .          
+D.M.Tipo1        -INF             .              .             EPS         
 D.M.Tipo2        -INF             .              .              .          
-T.N.Tipo1        -INF         -112.5000          .              .          
-T.N.Tipo2        -INF          -20.0000          .              .          
-T.D.Tipo1        -INF             .              .              .          
+T.N.Tipo1        -INF             .              .              .          
+T.N.Tipo2        -INF             .              .              .          
+T.D.Tipo1        -INF          -79.4528          .              .          
 T.D.Tipo2        -INF             .              .              .          
 T.M.Tipo1        -INF             .              .              .          
 T.M.Tipo2        -INF             .              .              .          
 T.A.Tipo1        -INF             .              .             EPS         
-T.A.Tipo2        -INF             .              .              .          
+T.A.Tipo2        -INF             .              .             EPS         
 M.G.Tipo1        -INF             .              .              .          
 M.G.Tipo2        -INF             .              .              .          
 M.D.Tipo1        -INF             .              .              .          
 M.D.Tipo2        -INF             .              .              .          
-M.T.Tipo1        -INF           -7.5000          .              .          
+M.T.Tipo1        -INF             .              .              .          
 M.T.Tipo2        -INF             .              .              .          
 M.Z.Tipo1        -INF             .              .             EPS         
-M.Z.Tipo2        -INF             .              .              .          
-A.T.Tipo1        -INF          -93.0000          .              .          
+M.Z.Tipo2        -INF             .              .             EPS         
+A.T.Tipo1        -INF             .              .              .          
 A.T.Tipo2        -INF             .              .              .          
 A.Z.Tipo1        -INF             .              .              .          
 A.Z.Tipo2        -INF             .              .              .          
 Z.M.Tipo1        -INF             .              .              .          
 Z.M.Tipo2        -INF             .              .              .          
-Z.A.Tipo1        -INF         -142.8571          .              .          
-Z.A.Tipo2        -INF             .              .              .          
+Z.A.Tipo1        -INF             .              .             EPS         
+Z.A.Tipo2        -INF             .              .             EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 35
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE theequality Using MIP From line 253
+
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
@@ -1310,154 +1642,203 @@ Z.A.Tipo2        -INF             .              .              .
 
   maxbudget  budget maximo
 
+---- EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1     -9997.5000        51.2500        +INF             .          
+N.G.Tipo2     -9997.5000        51.2500        +INF             .          
+N.D.Tipo1     -9998.0000     -9950.0000        +INF             .          
+N.D.Tipo2     -9998.0000     -9950.0000        +INF             .          
+N.T.Tipo1     -9985.0000     -9985.0000        +INF            EPS         
+N.T.Tipo2     -9985.0000     -9985.0000        +INF             .          
+G.N.Tipo1     -9997.5000       -51.2500        +INF             .          
+G.N.Tipo2     -9997.5000       -51.2500        +INF             .          
+G.D.Tipo1     -9998.7500        -1.2500        +INF             .          
+G.D.Tipo2     -9998.7500        -1.2500        +INF             .          
+G.M.Tipo1     -9940.0000     -9940.0000        +INF             .          
+G.M.Tipo2     -9940.0000     -9940.0000        +INF            EPS         
+D.N.Tipo1     -9998.0000       -50.0000        +INF             .          
+D.N.Tipo2     -9998.0000       -50.0000        +INF             .          
+D.G.Tipo1     -9998.7500     -9998.7500        +INF             .          
+D.G.Tipo2     -9998.7500     -9998.7500        +INF            EPS         
+D.T.Tipo1     -9965.0000       -35.0000        +INF             .          
+D.T.Tipo2     -9965.0000       -35.0000        +INF             .          
+D.M.Tipo1     -9960.0000     -9938.7500        +INF             .          
+D.M.Tipo2     -9960.0000        61.2500        +INF             .          
+T.N.Tipo1     -9985.0000       -15.0000        +INF             .          
+T.N.Tipo2     -9985.0000       -15.0000        +INF             .          
+T.D.Tipo1     -9965.0000     -9965.0000        +INF            EPS         
+T.D.Tipo2     -9965.0000        35.0000        +INF             .          
+T.M.Tipo1     -9995.0000     -9903.7500        +INF             .          
+T.M.Tipo2     -9995.0000     -9903.7500        +INF             .          
+T.A.Tipo1     -9995.5556     -9887.7500        +INF             .          
+T.A.Tipo2     -9995.2941     -9887.7500        +INF             .          
+M.G.Tipo1     -9940.0000       -60.0000        +INF             .          
+M.G.Tipo2     -9940.0000       -60.0000        +INF             .          
+M.D.Tipo1     -9960.0000       -61.2500        +INF             .          
+M.D.Tipo2     -9960.0000       -61.2500        +INF             .          
+M.T.Tipo1     -9995.0000       -96.2500        +INF             .          
+M.T.Tipo2     -9995.0000       -96.2500        +INF             .          
+M.Z.Tipo1     -9995.0000     -9995.0000        +INF             .          
+M.Z.Tipo2     -9995.0000     -9995.0000        +INF            EPS         
+A.T.Tipo1     -9995.5556      -112.2500        +INF             .          
+A.T.Tipo2     -9995.2941      -112.2500        +INF             .          
+A.Z.Tipo1     -9989.0000       -11.0000        +INF             .          
+A.Z.Tipo2     -9989.0000       -11.0000        +INF             .          
+Z.M.Tipo1     -9995.0000        -5.0000        +INF             .          
+Z.M.Tipo2     -9995.0000        -5.0000        +INF             .          
+Z.A.Tipo1     -9989.0000     -9989.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 36
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE theequality Using MIP From line 253
+
+
+     EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2     -9989.0000     -9989.0000        +INF            EPS         
+
 ---- EQU res8  
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1        -INF          -55.0000          .              .          
-N.G.Tipo2        -INF         -100.0000          .              .          
-N.D.Tipo1        -INF         -100.0000          .              .          
-N.D.Tipo2        -INF         -100.0000          .              .          
-N.T.Tipo1        -INF             .              .             EPS         
-N.T.Tipo2        -INF             .              .              .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 28
+N.G.Tipo1        -INF             .              .              .          
+N.G.Tipo2        -INF             .              .              .          
+N.D.Tipo1        -INF         -138.0000          .              .          
+N.D.Tipo2        -INF         -115.0000          .              .          
+N.T.Tipo1        -INF          -78.0000          .              .          
+N.T.Tipo2        -INF          -97.3176          .              .          
+G.N.Tipo1        -INF             .              .              .          
+G.N.Tipo2        -INF             .              .              .          
+G.D.Tipo1        -INF             .              .              .          
+G.D.Tipo2        -INF             .              .              .          
+G.M.Tipo1        -INF          -20.0314          .              .          
+G.M.Tipo2        -INF          -55.0000          .              .          
+D.N.Tipo1        -INF             .              .              .          
+D.N.Tipo2        -INF             .              .              .          
+D.G.Tipo1        -INF          -75.0314          .              .          
+D.G.Tipo2        -INF          -95.0000          .              .          
+D.T.Tipo1        -INF             .              .              .          
+D.T.Tipo2        -INF             .              .              .          
+D.M.Tipo1        -INF         -138.0000          .              .          
+D.M.Tipo2        -INF             .              .              .          
+T.N.Tipo1        -INF             .              .              .          
+T.N.Tipo2        -INF             .              .              .          
+T.D.Tipo1        -INF          -85.0314          .              .          
+T.D.Tipo2        -INF             .              .              .          
+T.M.Tipo1        -INF         -138.0000          .              .          
+T.M.Tipo2        -INF         -115.0000          .              .          
+T.A.Tipo1        -INF         -138.0000          .              .          
+T.A.Tipo2        -INF          -67.3176          .              .          
+M.G.Tipo1        -INF             .              .              .          
+M.G.Tipo2        -INF             .              .              .          
+M.D.Tipo1        -INF             .              .              .          
+M.D.Tipo2        -INF             .              .              .          
+M.T.Tipo1        -INF             .              .              .          
+M.T.Tipo2        -INF             .              .              .          
+M.Z.Tipo1        -INF          -30.0314          .              .          
+M.Z.Tipo2        -INF          -50.0000          .              .          
+A.T.Tipo1        -INF             .              .              .          
+A.T.Tipo2        -INF             .              .              .          
+A.Z.Tipo1        -INF             .              .              .          
+A.Z.Tipo2        -INF             .              .              .          
+Z.M.Tipo1        -INF             .              .              .          
+Z.M.Tipo2        -INF             .              .              .          
+Z.A.Tipo1        -INF         -125.2695          .              .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 37
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
+Solution Report     SOLVE theequality Using MIP From line 253
 
 
      EQU res8  
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1        -INF         -100.0000          .              .          
-G.N.Tipo2        -INF          -55.0000          .              .          
-G.D.Tipo1        -INF         -100.0000          .              .          
-G.D.Tipo2        -INF         -100.0000          .              .          
-G.M.Tipo1        -INF             .              .              .          
-G.M.Tipo2        -INF         -100.0000          .              .          
-D.N.Tipo1        -INF          -90.0000          .              .          
-D.N.Tipo2        -INF          -85.0000          .              .          
-D.G.Tipo1        -INF         -100.0000          .              .          
-D.G.Tipo2        -INF         -100.0000          .              .          
-D.T.Tipo1        -INF         -100.0000          .              .          
-D.T.Tipo2        -INF         -100.0000          .              .          
-D.M.Tipo1        -INF         -100.0000          .              .          
-D.M.Tipo2        -INF         -100.0000          .              .          
-T.N.Tipo1        -INF          -25.0000          .              .          
-T.N.Tipo2        -INF          -90.0000          .              .          
-T.D.Tipo1        -INF         -100.0000          .              .          
-T.D.Tipo2        -INF         -100.0000          .              .          
-T.M.Tipo1        -INF         -100.0000          .              .          
-T.M.Tipo2        -INF         -100.0000          .              .          
-T.A.Tipo1        -INF             .              .             EPS         
-T.A.Tipo2        -INF             .              .             EPS         
-M.G.Tipo1        -INF         -100.0000          .              .          
-M.G.Tipo2        -INF         -100.0000          .              .          
-M.D.Tipo1        -INF         -100.0000          .              .          
-M.D.Tipo2        -INF         -100.0000          .              .          
-M.T.Tipo1        -INF          -95.0000          .              .          
-M.T.Tipo2        -INF         -100.0000          .              .          
-M.Z.Tipo1        -INF             .              .             EPS         
-M.Z.Tipo2        -INF         -100.0000          .              .          
-A.T.Tipo1        -INF          -38.0000          .              .          
-A.T.Tipo2        -INF         -100.0000          .              .          
-A.Z.Tipo1        -INF         -100.0000          .              .          
-A.Z.Tipo2        -INF         -100.0000          .              .          
-Z.M.Tipo1        -INF         -100.0000          .              .          
-Z.M.Tipo2        -INF         -100.0000          .              .          
-Z.A.Tipo1        -INF             .              .             EPS         
-Z.A.Tipo2        -INF         -100.0000          .              .          
+Z.A.Tipo2        -INF          -50.0000          .              .          
 
 ---- VAR X  numero de vehiculos k de ciudad i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1          .            45.0000        +INF             .          
+N.G.Tipo1          .              .            +INF            EPS         
 N.G.Tipo2          .              .            +INF            EPS         
 N.D.Tipo1          .              .            +INF            EPS         
-N.D.Tipo2          .              .            +INF            EPS         
-N.T.Tipo1          .           100.0000        +INF             .          
-N.T.Tipo2          .           100.0000        +INF             .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 29
+N.D.Tipo2          .              .            +INF             .          
+N.T.Tipo1          .            60.0000        +INF             .          
+N.T.Tipo2          .            17.6824        +INF             .          
+G.N.Tipo1          .              .            +INF            EPS         
+G.N.Tipo2          .              .            +INF            EPS         
+G.D.Tipo1          .              .            +INF            EPS         
+G.D.Tipo2          .              .            +INF            EPS         
+G.M.Tipo1          .           117.9686        +INF             .          
+G.M.Tipo2          .            60.0000        +INF             .          
+D.N.Tipo1          .              .            +INF            EPS         
+D.N.Tipo2          .              .            +INF            EPS         
+D.G.Tipo1          .            62.9686        +INF             .          
+D.G.Tipo2          .            20.0000        +INF             .          
+D.T.Tipo1          .              .            +INF            EPS         
+D.T.Tipo2          .              .            +INF            EPS         
+D.M.Tipo1          .              .            +INF            EPS         
+D.M.Tipo2          .              .            +INF            EPS         
+T.N.Tipo1          .              .            +INF            EPS         
+T.N.Tipo2          .              .            +INF            EPS         
+T.D.Tipo1          .            52.9686        +INF             .          
+T.D.Tipo2          .              .            +INF            EPS         
+T.M.Tipo1          .              .            +INF            EPS         
+T.M.Tipo2          .              .            +INF            EPS         
+T.A.Tipo1          .              .            +INF             .          
+T.A.Tipo2          .            47.6824        +INF             .          
+M.G.Tipo1          .              .            +INF            EPS         
+M.G.Tipo2          .              .            +INF            EPS         
+M.D.Tipo1          .              .            +INF            EPS         
+M.D.Tipo2          .              .            +INF            EPS         
+M.T.Tipo1          .              .            +INF            EPS         
+M.T.Tipo2          .              .            +INF            EPS         
+M.Z.Tipo1          .           107.9686        +INF             .          
+M.Z.Tipo2          .            65.0000        +INF             .          
+A.T.Tipo1          .              .            +INF            EPS         
+A.T.Tipo2          .              .            +INF            EPS         
+A.Z.Tipo1          .              .            +INF            EPS         
+A.Z.Tipo2          .              .            +INF            EPS         
+Z.M.Tipo1          .              .            +INF            EPS         
+Z.M.Tipo2          .              .            +INF            EPS         
+Z.A.Tipo1          .            12.7305        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 38
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
+Solution Report     SOLVE theequality Using MIP From line 253
 
 
      VAR X  numero de vehiculos k de ciudad i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1          .              .            +INF            EPS         
-G.N.Tipo2          .            45.0000        +INF             .          
-G.D.Tipo1          .              .            +INF            EPS         
-G.D.Tipo2          .              .            +INF            EPS         
-G.M.Tipo1          .           100.0000        +INF             .          
-G.M.Tipo2          .              .            +INF            EPS         
-D.N.Tipo1          .            10.0000        +INF             .          
-D.N.Tipo2          .            15.0000        +INF             .          
-D.G.Tipo1          .              .            +INF            EPS         
-D.G.Tipo2          .              .            +INF            EPS         
-D.T.Tipo1          .              .            +INF            EPS         
-D.T.Tipo2          .              .            +INF            EPS         
-D.M.Tipo1          .              .            +INF            EPS         
-D.M.Tipo2          .              .            +INF            EPS         
-T.N.Tipo1          .            75.0000        +INF             .          
-T.N.Tipo2          .            10.0000        +INF             .          
-T.D.Tipo1          .              .            +INF            EPS         
-T.D.Tipo2          .              .            +INF            EPS         
-T.M.Tipo1          .              .            +INF            EPS         
-T.M.Tipo2          .              .            +INF            EPS         
-T.A.Tipo1          .           100.0000        +INF             .          
-T.A.Tipo2          .           100.0000        +INF             .          
-M.G.Tipo1          .              .            +INF            EPS         
-M.G.Tipo2          .              .            +INF            EPS         
-M.D.Tipo1          .              .            +INF            EPS         
-M.D.Tipo2          .              .            +INF            EPS         
-M.T.Tipo1          .             5.0000        +INF             .          
-M.T.Tipo2          .              .            +INF            EPS         
-M.Z.Tipo1          .           100.0000        +INF             .          
-M.Z.Tipo2          .              .            +INF            EPS         
-A.T.Tipo1          .            62.0000        +INF             .          
-A.T.Tipo2          .              .            +INF            EPS         
-A.Z.Tipo1          .              .            +INF            EPS         
-A.Z.Tipo2          .              .            +INF            EPS         
-Z.M.Tipo1          .              .            +INF            EPS         
-Z.M.Tipo2          .              .            +INF            EPS         
-Z.A.Tipo1          .           100.0000        +INF             .          
-Z.A.Tipo2          .              .            +INF            EPS         
+Z.A.Tipo2          .            65.0000        +INF             .          
 
 ---- VAR carga  carga de ciudad i a j con vehiculo tipo k
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
 N.G.Tipo1          .              .            +INF            EPS         
-N.G.Tipo2          .              .            +INF             .          
-N.D.Tipo1          .              .            +INF            EPS         
+N.G.Tipo2          .              .            +INF            EPS         
+N.D.Tipo1          .              .            +INF             .          
 N.D.Tipo2          .              .            +INF             .          
-N.T.Tipo1          .           150.0000        +INF             .          
-N.T.Tipo2          .           200.0000        +INF             .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 30
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
-
-
-     VAR carga  carga de ciudad i a j con vehiculo tipo k
-
-                 LOWER          LEVEL          UPPER         MARGINAL
-
+N.T.Tipo1          .            90.0000        +INF             .          
+N.T.Tipo2          .            53.0472        +INF             .          
 G.N.Tipo1          .              .            +INF            EPS         
 G.N.Tipo2          .              .            +INF            EPS         
 G.D.Tipo1          .              .            +INF            EPS         
 G.D.Tipo2          .              .            +INF            EPS         
-G.M.Tipo1          .           150.0000        +INF             .          
-G.M.Tipo2          .              .            +INF            EPS         
+G.M.Tipo1          .           176.9528        +INF             .          
+G.M.Tipo2          .           180.0000        +INF             .          
 D.N.Tipo1          .              .            +INF            EPS         
 D.N.Tipo2          .              .            +INF            EPS         
 D.G.Tipo1          .              .            +INF            EPS         
 D.G.Tipo2          .              .            +INF            EPS         
 D.T.Tipo1          .              .            +INF            EPS         
 D.T.Tipo2          .              .            +INF            EPS         
-D.M.Tipo1          .              .            +INF            EPS         
+D.M.Tipo1          .              .            +INF             .          
 D.M.Tipo2          .              .            +INF            EPS         
 T.N.Tipo1          .              .            +INF            EPS         
 T.N.Tipo2          .              .            +INF            EPS         
@@ -1465,108 +1846,955 @@ T.D.Tipo1          .              .            +INF            EPS
 T.D.Tipo2          .              .            +INF            EPS         
 T.M.Tipo1          .              .            +INF            EPS         
 T.M.Tipo2          .              .            +INF            EPS         
-T.A.Tipo1          .           150.0000        +INF             .          
-T.A.Tipo2          .           200.0000        +INF             .          
+T.A.Tipo1          .              .            +INF             .          
+T.A.Tipo2          .           143.0472        +INF             .          
 M.G.Tipo1          .              .            +INF            EPS         
 M.G.Tipo2          .              .            +INF            EPS         
 M.D.Tipo1          .              .            +INF            EPS         
 M.D.Tipo2          .              .            +INF            EPS         
 M.T.Tipo1          .              .            +INF            EPS         
 M.T.Tipo2          .              .            +INF            EPS         
-M.Z.Tipo1          .           150.0000        +INF             .          
-M.Z.Tipo2          .              .            +INF            EPS         
+M.Z.Tipo1          .           161.9528        +INF             .          
+M.Z.Tipo2          .           195.0000        +INF             .          
 A.T.Tipo1          .              .            +INF            EPS         
 A.T.Tipo2          .              .            +INF            EPS         
 A.Z.Tipo1          .              .            +INF            EPS         
 A.Z.Tipo2          .              .            +INF            EPS         
 Z.M.Tipo1          .              .            +INF            EPS         
 Z.M.Tipo2          .              .            +INF            EPS         
-Z.A.Tipo1          .             7.1429        +INF             .          
-Z.A.Tipo2          .              .            +INF            EPS         
+Z.A.Tipo1          .            19.0957        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 39
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE theequality Using MIP From line 253
+
+
+     VAR carga  carga de ciudad i a j con vehiculo tipo k
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2          .           195.0000        +INF             .          
 
 ---- VAR Y  uno si vehiculo tipo k viaja de i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-N.G.Tipo1          .             1.0000         1.0000         EPS         
-N.G.Tipo2          .             1.0000         1.0000         EPS         
+N.G.Tipo1          .              .             1.0000         EPS         
+N.G.Tipo2          .              .             1.0000         EPS         
 N.D.Tipo1          .             1.0000         1.0000         EPS         
 N.D.Tipo2          .             1.0000         1.0000         EPS         
 N.T.Tipo1          .             1.0000         1.0000         EPS         
 N.T.Tipo2          .             1.0000         1.0000         EPS         
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 31
+G.N.Tipo1          .              .             1.0000         EPS         
+G.N.Tipo2          .              .             1.0000         EPS         
+G.D.Tipo1          .              .             1.0000         EPS         
+G.D.Tipo2          .              .             1.0000         EPS         
+G.M.Tipo1          .             1.0000         1.0000         EPS         
+G.M.Tipo2          .             1.0000         1.0000         EPS         
+D.N.Tipo1          .              .             1.0000         EPS         
+D.N.Tipo2          .              .             1.0000         EPS         
+D.G.Tipo1          .             1.0000         1.0000         EPS         
+D.G.Tipo2          .             1.0000         1.0000         EPS         
+D.T.Tipo1          .              .             1.0000         EPS         
+D.T.Tipo2          .              .             1.0000         EPS         
+D.M.Tipo1          .             1.0000         1.0000         EPS         
+D.M.Tipo2          .              .             1.0000         EPS         
+T.N.Tipo1          .              .             1.0000         EPS         
+T.N.Tipo2          .              .             1.0000         EPS         
+T.D.Tipo1          .             1.0000         1.0000         EPS         
+T.D.Tipo2          .              .             1.0000         EPS         
+T.M.Tipo1          .             1.0000         1.0000         EPS         
+T.M.Tipo2          .             1.0000         1.0000         EPS         
+T.A.Tipo1          .             1.0000         1.0000         EPS         
+T.A.Tipo2          .             1.0000         1.0000         EPS         
+M.G.Tipo1          .              .             1.0000         EPS         
+M.G.Tipo2          .              .             1.0000         EPS         
+M.D.Tipo1          .              .             1.0000         EPS         
+M.D.Tipo2          .              .             1.0000         EPS         
+M.T.Tipo1          .              .             1.0000         EPS         
+M.T.Tipo2          .              .             1.0000         EPS         
+M.Z.Tipo1          .             1.0000         1.0000         EPS         
+M.Z.Tipo2          .             1.0000         1.0000         EPS         
+A.T.Tipo1          .              .             1.0000         EPS         
+A.T.Tipo2          .              .             1.0000         EPS         
+A.Z.Tipo1          .              .             1.0000         EPS         
+A.Z.Tipo2          .              .             1.0000         EPS         
+Z.M.Tipo1          .              .             1.0000         EPS         
+Z.M.Tipo2          .              .             1.0000         EPS         
+Z.A.Tipo1          .             1.0000         1.0000         EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 40
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
+Solution Report     SOLVE theequality Using MIP From line 253
 
 
      VAR Y  uno si vehiculo tipo k viaja de i a j
 
                  LOWER          LEVEL          UPPER         MARGINAL
 
-G.N.Tipo1          .             1.0000         1.0000         EPS         
-G.N.Tipo2          .             1.0000         1.0000         EPS         
-G.D.Tipo1          .             1.0000         1.0000         EPS         
-G.D.Tipo2          .             1.0000         1.0000         EPS         
-G.M.Tipo1          .             1.0000         1.0000         EPS         
-G.M.Tipo2          .             1.0000         1.0000         EPS         
-D.N.Tipo1          .             1.0000         1.0000         EPS         
-D.N.Tipo2          .             1.0000         1.0000         EPS         
-D.G.Tipo1          .             1.0000         1.0000         EPS         
-D.G.Tipo2          .             1.0000         1.0000         EPS         
-D.T.Tipo1          .             1.0000         1.0000         EPS         
-D.T.Tipo2          .             1.0000         1.0000         EPS         
-D.M.Tipo1          .             1.0000         1.0000         EPS         
-D.M.Tipo2          .             1.0000         1.0000         EPS         
-T.N.Tipo1          .             1.0000         1.0000         EPS         
-T.N.Tipo2          .             1.0000         1.0000         EPS         
-T.D.Tipo1          .             1.0000         1.0000         EPS         
-T.D.Tipo2          .             1.0000         1.0000         EPS         
-T.M.Tipo1          .             1.0000         1.0000         EPS         
-T.M.Tipo2          .             1.0000         1.0000         EPS         
-T.A.Tipo1          .             1.0000         1.0000         EPS         
-T.A.Tipo2          .             1.0000         1.0000         EPS         
-M.G.Tipo1          .             1.0000         1.0000         EPS         
-M.G.Tipo2          .             1.0000         1.0000         EPS         
-M.D.Tipo1          .             1.0000         1.0000         EPS         
-M.D.Tipo2          .             1.0000         1.0000         EPS         
-M.T.Tipo1          .             1.0000         1.0000         EPS         
-M.T.Tipo2          .             1.0000         1.0000         EPS         
-M.Z.Tipo1          .             1.0000         1.0000         EPS         
-M.Z.Tipo2          .             1.0000         1.0000         EPS         
-A.T.Tipo1          .             1.0000         1.0000         EPS         
-A.T.Tipo2          .             1.0000         1.0000         EPS         
-A.Z.Tipo1          .             1.0000         1.0000         EPS         
-A.Z.Tipo2          .             1.0000         1.0000         EPS         
-Z.M.Tipo1          .             1.0000         1.0000         EPS         
-Z.M.Tipo2          .             1.0000         1.0000         EPS         
-Z.A.Tipo1          .             1.0000         1.0000         EPS         
 Z.A.Tipo2          .             1.0000         1.0000         EPS         
 
 ---- VAR load  cantidad de carga que se queda en i
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-N          .           450.0000        +INF             .          
-G          .           350.0000        +INF             .          
+N          .           656.9528        +INF             .          
+G          .           143.0472        +INF             .          
 D          .              .            +INF            EPS         
 T          .              .            +INF            EPS         
 M          .              .            +INF            EPS         
 A          .           357.1429        +INF             .          
-GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 10:41:27 Page 32
-G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
-Solution Report     SOLVE theequality Using MIP From line 251
+Z          .           142.8571        +INF             .          
 
-
-     VAR load  cantidad de carga que se queda en i
+---- VAR Time  tiempo en llegar a la ciudad i
 
          LOWER          LEVEL          UPPER         MARGINAL
 
-Z          .           142.8571        +INF             .          
+N          .              .            +INF            EPS         
+G          .            51.2500        +INF             .          
+D          .            50.0000        +INF             .          
+T          .            15.0000        +INF             .          
+M          .           111.2500        +INF             .          
+A          .           127.2500        +INF             .          
+Z          .           116.2500        +INF             .          
 
                            LOWER          LEVEL          UPPER         MARGINAL
 
 ---- VAR Coste             -INF        80000.0000        +INF             .          
 ---- VAR Equidad           -INF            0.4762        +INF             .          
+---- VAR Tiempo            -INF          127.2500        +INF             .          
+
+  Coste  Coste total
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 41
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE thetime Using MIP From line 257
+
+
+---- FOBJETIVO1  =E=  restriccion de la funcion objectivo cost
+
+FOBJETIVO1..  - 40*X(N,G,Tipo1) - 60*X(N,G,Tipo2) - 20*X(N,D,Tipo1) - 30*X(N,D,Tipo2) - 90*X(N,T,Tipo1) - 135*X(N,T,Tipo2) - 40*X(G,N,Tipo1) - 60*X(G,N,Tipo2) - 20*X(G,D,Tipo1) - 30*X(G,D,Tipo2) - 120*X(G,M,Tipo1) - 180*X(G,M,Tipo2) - 20*X(D,N,Tipo1)
+     
+      - 30*X(D,N,Tipo2) - 20*X(D,G,Tipo1) - 30*X(D,G,Tipo2) - 70*X(D,T,Tipo1) - 105*X(D,T,Tipo2) - 80*X(D,M,Tipo1) - 120*X(D,M,Tipo2) - 90*X(T,N,Tipo1) - 135*X(T,N,Tipo2) - 70*X(T,D,Tipo1) - 105*X(T,D,Tipo2) - 50*X(T,M,Tipo1) - 75*X(T,M,Tipo2)
+     
+      - 80*X(T,A,Tipo1) - 120*X(T,A,Tipo2) - 120*X(M,G,Tipo1) - 180*X(M,G,Tipo2) - 80*X(M,D,Tipo1) - 120*X(M,D,Tipo2) - 50*X(M,T,Tipo1) - 75*X(M,T,Tipo2) - 50*X(M,Z,Tipo1) - 75*X(M,Z,Tipo2) - 80*X(A,T,Tipo1) - 120*X(A,T,Tipo2) - 110*X(A,Z,Tipo1)
+     
+      - 165*X(A,Z,Tipo2) - 50*X(Z,M,Tipo1) - 75*X(Z,M,Tipo2) - 110*X(Z,A,Tipo1) - 165*X(Z,A,Tipo2) - 5*carga(N,G,Tipo1) - 5*carga(N,G,Tipo2) - 2.5*carga(N,D,Tipo1) - 2.5*carga(N,D,Tipo2) - 11.25*carga(N,T,Tipo1) - 11.25*carga(N,T,Tipo2)
+     
+      - 5*carga(G,N,Tipo1) - 5*carga(G,N,Tipo2) - 2.5*carga(G,D,Tipo1) - 2.5*carga(G,D,Tipo2) - 15*carga(G,M,Tipo1) - 15*carga(G,M,Tipo2) - 2.5*carga(D,N,Tipo1) - 2.5*carga(D,N,Tipo2) - 2.5*carga(D,G,Tipo1) - 2.5*carga(D,G,Tipo2) - 8.75*carga(D,T,Tipo1)
+     
+      - 8.75*carga(D,T,Tipo2) - 10*carga(D,M,Tipo1) - 10*carga(D,M,Tipo2) - 11.25*carga(T,N,Tipo1) - 11.25*carga(T,N,Tipo2) - 8.75*carga(T,D,Tipo1) - 8.75*carga(T,D,Tipo2) - 6.25*carga(T,M,Tipo1) - 6.25*carga(T,M,Tipo2) - 10*carga(T,A,Tipo1)
+     
+      - 10*carga(T,A,Tipo2) - 15*carga(M,G,Tipo1) - 15*carga(M,G,Tipo2) - 10*carga(M,D,Tipo1) - 10*carga(M,D,Tipo2) - 6.25*carga(M,T,Tipo1) - 6.25*carga(M,T,Tipo2) - 6.25*carga(M,Z,Tipo1) - 6.25*carga(M,Z,Tipo2) - 10*carga(A,T,Tipo1) - 10*carga(A,T,Tipo2)
+     
+      - 13.75*carga(A,Z,Tipo1) - 13.75*carga(A,Z,Tipo2) - 6.25*carga(Z,M,Tipo1) - 6.25*carga(Z,M,Tipo2) - 13.75*carga(Z,A,Tipo1) - 13.75*carga(Z,A,Tipo2) + Coste =E= 0 ; (LHS = -1.45519152283669E-11, INFES = 1.45519152283669E-11 ****)
+     
+
+---- FOBJETIVO2  =L=  equidad
+
+FOBJETIVO2(A)..  - 0.00133333333333333*load(A) + Equidad =L= 0 ; (LHS = 0)
+     
+FOBJETIVO2(Z)..  - 0.00333333333333333*load(Z) + Equidad =L= 0 ; (LHS = 0)
+     
+
+---- FOBJETIVO3  =G=  tiempo
+
+FOBJETIVO3(A)..  - Time(A) + Tiempo =G= 0 ; (LHS = 0)
+     
+FOBJETIVO3(Z)..  - Time(Z) + Tiempo =G= 0 ; (LHS = 11)
+     
+
+---- flujoAyuda  =E=  lo que sale tiene que ser igual a lo que llega
+
+flujoAyuda(N)..  - carga(N,G,Tipo1) - carga(N,G,Tipo2) - carga(N,D,Tipo1) - carga(N,D,Tipo2) - carga(N,T,Tipo1) - carga(N,T,Tipo2) + carga(G,N,Tipo1) + carga(G,N,Tipo2) + carga(D,N,Tipo1) + carga(D,N,Tipo2) + carga(T,N,Tipo1) + carga(T,N,Tipo2) - load(N)
+      =E= -800 ; (LHS = -800)
+     
+flujoAyuda(G)..  carga(N,G,Tipo1) + carga(N,G,Tipo2) - carga(G,N,Tipo1) - carga(G,N,Tipo2) - carga(G,D,Tipo1) - carga(G,D,Tipo2) - carga(G,M,Tipo1) - carga(G,M,Tipo2) + carga(D,G,Tipo1) + carga(D,G,Tipo2) + carga(M,G,Tipo1) + carga(M,G,Tipo2) - load(G)
+      =E= -500 ; (LHS = -500)
+     
+flujoAyuda(D)..  carga(N,D,Tipo1) + carga(N,D,Tipo2) + carga(G,D,Tipo1) + carga(G,D,Tipo2) - carga(D,N,Tipo1) - carga(D,N,Tipo2) - carga(D,G,Tipo1) - carga(D,G,Tipo2) - carga(D,T,Tipo1) - carga(D,T,Tipo2) - carga(D,M,Tipo1) - carga(D,M,Tipo2)
+     
+      + carga(T,D,Tipo1) + carga(T,D,Tipo2) + carga(M,D,Tipo1) + carga(M,D,Tipo2) - load(D) =E= 0 ; (LHS = 0)
+     
+REMAINING 4 ENTRIES SKIPPED
+
+
+---- flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 42
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE thetime Using MIP From line 257
+
+
+     flujoCoche  =G=  lo que sale tiene que ser igual o menor a lo que llega
+
+flujoCoche(N,Tipo1)..  - X(N,G,Tipo1) - X(N,D,Tipo1) - X(N,T,Tipo1) + X(G,N,Tipo1) + X(D,N,Tipo1) + X(T,N,Tipo1) =G= -60 ; (LHS = -60)
+     
+flujoCoche(N,Tipo2)..  - X(N,G,Tipo2) - X(N,D,Tipo2) - X(N,T,Tipo2) + X(G,N,Tipo2) + X(D,N,Tipo2) + X(T,N,Tipo2) =G= -20 ; (LHS = -17.6823888700373)
+     
+flujoCoche(G,Tipo1)..  X(N,G,Tipo1) - X(G,N,Tipo1) - X(G,D,Tipo1) - X(G,M,Tipo1) + X(D,G,Tipo1) + X(M,G,Tipo1) =G= -55 ; (LHS = -55)
+     
+REMAINING 11 ENTRIES SKIPPED
+
+
+---- flow  =L=  lo que queda tiene que ser menor que la demanda mas la oferta
+
+flow(N)..  load(N) =L= 800 ; (LHS = 656.952833389888)
+     
+flow(G)..  load(G) =L= 500 ; (LHS = 143.047166610112)
+     
+flow(D)..  load(D) =L= 0 ; (LHS = 0)
+     
+REMAINING 4 ENTRIES SKIPPED
+
+
+---- demandatot  =E=  lo que llega de A y Z es igual a quinientos
+
+demandatot..  load(A) + load(Z) =E= 500 ; (LHS = 500)
+     
+
+---- cargacapa  =L=  la carga tiene que ser menor que lo que podemos transportar
+
+cargacapa(N,G,Tipo1)..  - 1.5*X(N,G,Tipo1) + carga(N,G,Tipo1) =L= 0 ; (LHS = 0)
+     
+cargacapa(N,G,Tipo2)..  - 3*X(N,G,Tipo2) + carga(N,G,Tipo2) =L= 0 ; (LHS = 0)
+     
+cargacapa(N,D,Tipo1)..  - 1.5*X(N,D,Tipo1) + carga(N,D,Tipo1) =L= 0 ; (LHS = 0)
+     
+REMAINING 41 ENTRIES SKIPPED
+
+
+---- maxbudget  =L=  budget maximo
+
+maxbudget..  Coste =L= 80000 ; (LHS = 80000)
+     
+
+---- resTiempo  =G=  
+
+resTiempo(N,G,Tipo1)..  - 10000*Y(N,G,Tipo1) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 51.25)
+     
+resTiempo(N,G,Tipo2)..  - 10000*Y(N,G,Tipo2) - Time(N) + Time(G) =G= -9997.5 ; (LHS = 51.25)
+     
+resTiempo(N,D,Tipo1)..  - 10000*Y(N,D,Tipo1) - Time(N) + Time(D) =G= -9998 ; (LHS = -9950)
+     
+REMAINING 41 ENTRIES SKIPPED
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 43
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE thetime Using MIP From line 257
+
+
+---- res8  =L=  
+
+res8(N,G,Tipo1)..  X(N,G,Tipo1) - 138*Y(N,G,Tipo1) =L= 0 ; (LHS = 0)
+     
+res8(N,G,Tipo2)..  X(N,G,Tipo2) - 115*Y(N,G,Tipo2) =L= 0 ; (LHS = 0)
+     
+res8(N,D,Tipo1)..  X(N,D,Tipo1) - 138*Y(N,D,Tipo1) =L= 0 ; (LHS = -138)
+     
+REMAINING 41 ENTRIES SKIPPED
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 44
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thetime Using MIP From line 257
+
+
+---- X  numero de vehiculos k de ciudad i a j
+
+X(N,G,Tipo1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+      -40       FOBJETIVO1
+       -1       flujoCoche(N,Tipo1)
+        1       flujoCoche(G,Tipo1)
+       -1.5     cargacapa(N,G,Tipo1)
+        1       res8(N,G,Tipo1)
+
+X(N,G,Tipo2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+      -60       FOBJETIVO1
+       -1       flujoCoche(N,Tipo2)
+        1       flujoCoche(G,Tipo2)
+       -3       cargacapa(N,G,Tipo2)
+        1       res8(N,G,Tipo2)
+
+X(N,D,Tipo1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+      -20       FOBJETIVO1
+       -1       flujoCoche(N,Tipo1)
+        1       flujoCoche(D,Tipo1)
+       -1.5     cargacapa(N,D,Tipo1)
+        1       res8(N,D,Tipo1)
+
+REMAINING 41 ENTRIES SKIPPED
+
+---- carga  carga de ciudad i a j con vehiculo tipo k
+
+carga(N,G,Tipo1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+       -5       FOBJETIVO1
+       -1       flujoAyuda(N)
+        1       flujoAyuda(G)
+        1       cargacapa(N,G,Tipo1)
+
+carga(N,G,Tipo2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+       -5       FOBJETIVO1
+       -1       flujoAyuda(N)
+        1       flujoAyuda(G)
+        1       cargacapa(N,G,Tipo2)
+
+carga(N,D,Tipo1)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2.5     FOBJETIVO1
+       -1       flujoAyuda(N)
+        1       flujoAyuda(D)
+        1       cargacapa(N,D,Tipo1)
+
+REMAINING 41 ENTRIES SKIPPED
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 45
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thetime Using MIP From line 257
+
+
+---- Y  uno si vehiculo tipo k viaja de i a j
+
+Y(N,G,Tipo1)
+                (.LO, .L, .UP, .M = 0, 0, 1, EPS)
+   -10000       resTiempo(N,G,Tipo1)
+     -138       res8(N,G,Tipo1)
+
+Y(N,G,Tipo2)
+                (.LO, .L, .UP, .M = 0, 0, 1, EPS)
+   -10000       resTiempo(N,G,Tipo2)
+     -115       res8(N,G,Tipo2)
+
+Y(N,D,Tipo1)
+                (.LO, .L, .UP, .M = 0, 1, 1, EPS)
+   -10000       resTiempo(N,D,Tipo1)
+     -138       res8(N,D,Tipo1)
+
+REMAINING 41 ENTRIES SKIPPED
+
+---- load  cantidad de carga que se queda en i
+
+load(N)
+                (.LO, .L, .UP, .M = 0, 656.952833389888, +INF, 0)
+       -1       flujoAyuda(N)
+        1       flow(N)
+
+load(G)
+                (.LO, .L, .UP, .M = 0, 143.047166610112, +INF, 0)
+       -1       flujoAyuda(G)
+        1       flow(G)
+
+load(D)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+       -1       flujoAyuda(D)
+        1       flow(D)
+
+REMAINING 4 ENTRIES SKIPPED
+
+---- Time  tiempo en llegar a la ciudad i
+
+Time(N)
+                (.LO, .L, .UP, .M = 0, 0, +INF, EPS)
+       -1       resTiempo(N,G,Tipo1)
+       -1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(N,D,Tipo1)
+       -1       resTiempo(N,D,Tipo2)
+       -1       resTiempo(N,T,Tipo1)
+       -1       resTiempo(N,T,Tipo2)
+        1       resTiempo(G,N,Tipo1)
+        1       resTiempo(G,N,Tipo2)
+        1       resTiempo(D,N,Tipo1)
+        1       resTiempo(D,N,Tipo2)
+        1       resTiempo(T,N,Tipo1)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 46
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thetime Using MIP From line 257
+
+
+     Time  tiempo en llegar a la ciudad i
+
+        1       resTiempo(T,N,Tipo2)
+
+Time(G)
+                (.LO, .L, .UP, .M = 0, 51.25, +INF, 0)
+        1       resTiempo(N,G,Tipo1)
+        1       resTiempo(N,G,Tipo2)
+       -1       resTiempo(G,N,Tipo1)
+       -1       resTiempo(G,N,Tipo2)
+       -1       resTiempo(G,D,Tipo1)
+       -1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(G,M,Tipo1)
+       -1       resTiempo(G,M,Tipo2)
+        1       resTiempo(D,G,Tipo1)
+        1       resTiempo(D,G,Tipo2)
+        1       resTiempo(M,G,Tipo1)
+        1       resTiempo(M,G,Tipo2)
+
+Time(D)
+                (.LO, .L, .UP, .M = 0, 50, +INF, 0)
+        1       resTiempo(N,D,Tipo1)
+        1       resTiempo(N,D,Tipo2)
+        1       resTiempo(G,D,Tipo1)
+        1       resTiempo(G,D,Tipo2)
+       -1       resTiempo(D,N,Tipo1)
+       -1       resTiempo(D,N,Tipo2)
+       -1       resTiempo(D,G,Tipo1)
+       -1       resTiempo(D,G,Tipo2)
+       -1       resTiempo(D,T,Tipo1)
+       -1       resTiempo(D,T,Tipo2)
+       -1       resTiempo(D,M,Tipo1)
+       -1       resTiempo(D,M,Tipo2)
+        1       resTiempo(T,D,Tipo1)
+        1       resTiempo(T,D,Tipo2)
+        1       resTiempo(M,D,Tipo1)
+        1       resTiempo(M,D,Tipo2)
+
+REMAINING 4 ENTRIES SKIPPED
+
+---- Coste  Coste total
+
+Coste
+                (.LO, .L, .UP, .M = -INF, 80000, +INF, 0)
+        1       FOBJETIVO1
+        1       maxbudget
+
+
+---- Equidad  
+
+Equidad
+                (.LO, .L, .UP, .M = -INF, 0.476190476190476, +INF, 0)
+        1       FOBJETIVO2(A)
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 47
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE thetime Using MIP From line 257
+
+
+     Equidad  
+
+        1       FOBJETIVO2(Z)
+
+
+---- Tiempo  
+
+Tiempo
+                (.LO, .L, .UP, .M = -INF, 127.25, +INF, 0)
+        1       FOBJETIVO3(A)
+        1       FOBJETIVO3(Z)
+
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 48
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE thetime Using MIP From line 257
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS          167
+BLOCKS OF VARIABLES           8     SINGLE VARIABLES          149
+NON ZERO ELEMENTS           598     DISCRETE VARIABLES         44
+
+
+GENERATION TIME      =        0.022 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+
+
+EXECUTION TIME       =        0.027 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 49
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   thetime             OBJECTIVE  Tiempo
+     TYPE    MIP                 DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  257
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE               94.2500
+
+ RESOURCE USAGE, LIMIT          2.343      1000.000
+ ITERATION COUNT, LIMIT     76803    2000000000
+
+IBM ILOG CPLEX   24.4.2 r51415 Released Mar 15, 2015 DEG x86 64bit/MacOS X    
+Cplex 12.6.1.0
+
+Space for names approximately 0.01 Mb
+Use option 'names no' to turn use of names off
+MIP status(101): integer optimal solution
+Cplex Time: 2.33sec (det. 1483.74 ticks)
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Cplex Time: 0.00sec (det. 0.22 ticks)
+Proven optimal solution.
+
+MIP Solution:           94.250000    (76783 iterations, 4540 nodes)
+Final Solve:            94.250000    (20 iterations)
+
+Best possible:          94.250000
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU FOBJETIVO1          .              .              .             EPS         
+
+  FOBJETIVO1  restriccion de la funcion objectivo cost
+
+---- EQU FOBJETIVO2  equidad
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+A        -INF             .              .             EPS         
+Z        -INF           -0.7333          .              .          
+
+---- EQU FOBJETIVO3  tiempo
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+A          .              .            +INF            1.0000      
+Z          .            11.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 50
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+---- EQU flujoAyuda  lo que sale tiene que ser igual a lo que llega
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+N      -800.0000      -800.0000      -800.0000         EPS         
+G      -500.0000      -500.0000      -500.0000         EPS         
+D          .              .              .             EPS         
+T          .              .              .              .          
+M          .              .              .             EPS         
+A          .              .              .             EPS         
+Z          .              .              .             EPS         
+
+---- EQU flujoCoche  lo que sale tiene que ser igual o menor a lo que llega
+
+               LOWER          LEVEL          UPPER         MARGINAL
+
+N.Tipo1       -60.0000       -58.3333        +INF             .          
+N.Tipo2       -20.0000       -20.0000        +INF            EPS         
+G.Tipo1       -55.0000       -55.0000        +INF            EPS         
+G.Tipo2       -40.0000       -40.0000        +INF            EPS         
+D.Tipo1       -10.0000          .            +INF             .          
+D.Tipo2       -20.0000       -20.0000        +INF            EPS         
+T.Tipo1        -8.0000          .            +INF             .          
+T.Tipo2       -30.0000       -30.0000        +INF            EPS         
+M.Tipo1        -5.0000        -5.0000        +INF            EPS         
+M.Tipo2        -5.0000         2.5000        +INF             .          
+A.Tipo1          .              .            +INF             .          
+A.Tipo2          .            66.6667        +INF             .          
+Z.Tipo1          .           118.3333        +INF             .          
+Z.Tipo2          .            40.8333        +INF             .          
+
+---- EQU flow  lo que queda tiene que ser menor que la demanda mas la oferta
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+N        -INF          712.5000       800.0000          .          
+G        -INF           87.5000       500.0000          .          
+D        -INF             .              .              .          
+T        -INF             .              .              .          
+M        -INF             .              .              .          
+A        -INF          200.0000       750.0000          .          
+Z        -INF          300.0000       300.0000         EPS         
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU demandatot       500.0000       500.0000       500.0000         EPS         
+
+  demandatot  lo que llega de A y Z es igual a quinientos
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 51
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+---- EQU cargacapa  la carga tiene que ser menor que lo que podemos transportar
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1        -INF             .              .              .          
+N.G.Tipo2        -INF         -150.0000          .              .          
+N.D.Tipo1        -INF             .              .             EPS         
+N.D.Tipo2        -INF             .              .              .          
+N.T.Tipo1        -INF             .              .              .          
+N.T.Tipo2        -INF             .              .              .          
+G.N.Tipo1        -INF             .              .              .          
+G.N.Tipo2        -INF             .              .              .          
+G.D.Tipo1        -INF             .              .              .          
+G.D.Tipo2        -INF             .              .              .          
+G.M.Tipo1        -INF             .              .             EPS         
+G.M.Tipo2        -INF             .              .             EPS         
+D.N.Tipo1        -INF             .              .              .          
+D.N.Tipo2        -INF             .              .              .          
+D.G.Tipo1        -INF             .              .              .          
+D.G.Tipo2        -INF          -60.0000          .              .          
+D.T.Tipo1        -INF             .              .              .          
+D.T.Tipo2        -INF             .              .              .          
+D.M.Tipo1        -INF             .              .             EPS         
+D.M.Tipo2        -INF             .              .              .          
+T.N.Tipo1        -INF             .              .              .          
+T.N.Tipo2        -INF          -90.0000          .              .          
+T.D.Tipo1        -INF             .              .              .          
+T.D.Tipo2        -INF             .              .              .          
+T.M.Tipo1        -INF             .              .              .          
+T.M.Tipo2        -INF             .              .              .          
+T.A.Tipo1        -INF             .              .             EPS         
+T.A.Tipo2        -INF             .              .             EPS         
+M.G.Tipo1        -INF             .              .              .          
+M.G.Tipo2        -INF             .              .              .          
+M.D.Tipo1        -INF             .              .              .          
+M.D.Tipo2        -INF             .              .              .          
+M.T.Tipo1        -INF             .              .              .          
+M.T.Tipo2        -INF             .              .              .          
+M.Z.Tipo1        -INF             .              .             EPS         
+M.Z.Tipo2        -INF             .              .             EPS         
+A.T.Tipo1        -INF             .              .              .          
+A.T.Tipo2        -INF             .              .              .          
+A.Z.Tipo1        -INF             .              .              .          
+A.Z.Tipo2        -INF             .              .              .          
+Z.M.Tipo1        -INF             .              .              .          
+Z.M.Tipo2        -INF             .              .              .          
+Z.A.Tipo1        -INF             .              .              .          
+Z.A.Tipo2        -INF             .              .             EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 52
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU maxbudget         -INF        78018.7500     80000.0000          .          
+
+  maxbudget  budget maximo
+
+---- EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1     -9997.5000         3.2500        +INF             .          
+N.G.Tipo2     -9997.5000     -9996.7500        +INF             .          
+N.D.Tipo1     -9998.0000     -9998.0000        +INF            1.0000      
+N.D.Tipo2     -9998.0000         2.0000        +INF             .          
+N.T.Tipo1     -9985.0000       -15.0000        +INF             .          
+N.T.Tipo2     -9985.0000       -15.0000        +INF             .          
+G.N.Tipo1     -9997.5000        -3.2500        +INF             .          
+G.N.Tipo2     -9997.5000        -3.2500        +INF             .          
+G.D.Tipo1     -9998.7500        -1.2500        +INF             .          
+G.D.Tipo2     -9998.7500        -1.2500        +INF             .          
+G.M.Tipo1     -9940.0000     -9940.0000        +INF            1.0000      
+G.M.Tipo2     -9940.0000     -9940.0000        +INF             .          
+D.N.Tipo1     -9998.0000        -2.0000        +INF             .          
+D.N.Tipo2     -9998.0000        -2.0000        +INF             .          
+D.G.Tipo1     -9998.7500         1.2500        +INF             .          
+D.G.Tipo2     -9998.7500     -9998.7500        +INF            1.0000      
+D.T.Tipo1     -9965.0000       -17.0000        +INF             .          
+D.T.Tipo2     -9965.0000       -17.0000        +INF             .          
+D.M.Tipo1     -9960.0000     -9938.7500        +INF             .          
+D.M.Tipo2     -9960.0000        61.2500        +INF             .          
+T.N.Tipo1     -9985.0000        15.0000        +INF             .          
+T.N.Tipo2     -9985.0000     -9985.0000        +INF            1.0000      
+T.D.Tipo1     -9965.0000        17.0000        +INF             .          
+T.D.Tipo2     -9965.0000        17.0000        +INF             .          
+T.M.Tipo1     -9995.0000        78.2500        +INF             .          
+T.M.Tipo2     -9995.0000        78.2500        +INF             .          
+T.A.Tipo1     -9995.5556     -9905.7500        +INF             .          
+T.A.Tipo2     -9995.2941     -9905.7500        +INF             .          
+M.G.Tipo1     -9940.0000       -60.0000        +INF             .          
+M.G.Tipo2     -9940.0000       -60.0000        +INF             .          
+M.D.Tipo1     -9960.0000       -61.2500        +INF             .          
+M.D.Tipo2     -9960.0000       -61.2500        +INF             .          
+M.T.Tipo1     -9995.0000       -78.2500        +INF             .          
+M.T.Tipo2     -9995.0000       -78.2500        +INF             .          
+M.Z.Tipo1     -9995.0000     -9995.0000        +INF            1.0000      
+M.Z.Tipo2     -9995.0000     -9995.0000        +INF             .          
+A.T.Tipo1     -9995.5556       -94.2500        +INF             .          
+A.T.Tipo2     -9995.2941       -94.2500        +INF             .          
+A.Z.Tipo1     -9989.0000       -11.0000        +INF             .          
+A.Z.Tipo2     -9989.0000       -11.0000        +INF             .          
+Z.M.Tipo1     -9995.0000        -5.0000        +INF             .          
+Z.M.Tipo2     -9995.0000        -5.0000        +INF             .          
+Z.A.Tipo1     -9989.0000        11.0000        +INF             .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 53
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+     EQU resTiempo  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2     -9989.0000     -9989.0000        +INF            1.0000      
+
+---- EQU res8  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1        -INF             .              .              .          
+N.G.Tipo2        -INF          -65.0000          .              .          
+N.D.Tipo1        -INF          -79.6667          .              .          
+N.D.Tipo2        -INF             .              .              .          
+N.T.Tipo1        -INF             .              .              .          
+N.T.Tipo2        -INF             .              .              .          
+G.N.Tipo1        -INF             .              .              .          
+G.N.Tipo2        -INF             .              .              .          
+G.D.Tipo1        -INF             .              .              .          
+G.D.Tipo2        -INF             .              .              .          
+G.M.Tipo1        -INF          -83.0000          .              .          
+G.M.Tipo2        -INF           -5.0000          .              .          
+D.N.Tipo1        -INF             .              .              .          
+D.N.Tipo2        -INF             .              .              .          
+D.G.Tipo1        -INF             .              .              .          
+D.G.Tipo2        -INF          -95.0000          .              .          
+D.T.Tipo1        -INF             .              .              .          
+D.T.Tipo2        -INF             .              .              .          
+D.M.Tipo1        -INF          -79.6667          .              .          
+D.M.Tipo2        -INF             .              .              .          
+T.N.Tipo1        -INF             .              .              .          
+T.N.Tipo2        -INF          -85.0000          .              .          
+T.D.Tipo1        -INF             .              .              .          
+T.D.Tipo2        -INF             .              .              .          
+T.M.Tipo1        -INF             .              .              .          
+T.M.Tipo2        -INF             .              .              .          
+T.A.Tipo1        -INF         -138.0000          .              .          
+T.A.Tipo2        -INF         -115.0000          .              .          
+M.G.Tipo1        -INF             .              .              .          
+M.G.Tipo2        -INF             .              .              .          
+M.D.Tipo1        -INF             .              .              .          
+M.D.Tipo2        -INF             .              .              .          
+M.T.Tipo1        -INF             .              .              .          
+M.T.Tipo2        -INF             .              .              .          
+M.Z.Tipo1        -INF          -19.6667          .              .          
+M.Z.Tipo2        -INF           -7.5000          .              .          
+A.T.Tipo1        -INF             .              .              .          
+A.T.Tipo2        -INF             .              .              .          
+A.Z.Tipo1        -INF             .              .              .          
+A.Z.Tipo2        -INF             .              .              .          
+Z.M.Tipo1        -INF             .              .              .          
+Z.M.Tipo2        -INF             .              .              .          
+Z.A.Tipo1        -INF             .              .              .          
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 54
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+     EQU res8  
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2        -INF          -48.3333          .              .          
+
+---- VAR X  numero de vehiculos k de ciudad i a j
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1          .              .            +INF            EPS         
+N.G.Tipo2          .            50.0000        +INF             .          
+N.D.Tipo1          .            58.3333        +INF             .          
+N.D.Tipo2          .              .            +INF            EPS         
+N.T.Tipo1          .              .            +INF            EPS         
+N.T.Tipo2          .              .            +INF            EPS         
+G.N.Tipo1          .              .            +INF            EPS         
+G.N.Tipo2          .              .            +INF            EPS         
+G.D.Tipo1          .              .            +INF            EPS         
+G.D.Tipo2          .              .            +INF            EPS         
+G.M.Tipo1          .            55.0000        +INF             .          
+G.M.Tipo2          .           110.0000        +INF             .          
+D.N.Tipo1          .              .            +INF            EPS         
+D.N.Tipo2          .              .            +INF            EPS         
+D.G.Tipo1          .              .            +INF            EPS         
+D.G.Tipo2          .            20.0000        +INF             .          
+D.T.Tipo1          .              .            +INF            EPS         
+D.T.Tipo2          .              .            +INF            EPS         
+D.M.Tipo1          .            58.3333        +INF             .          
+D.M.Tipo2          .              .            +INF            EPS         
+T.N.Tipo1          .              .            +INF            EPS         
+T.N.Tipo2          .            30.0000        +INF             .          
+T.D.Tipo1          .              .            +INF            EPS         
+T.D.Tipo2          .              .            +INF            EPS         
+T.M.Tipo1          .              .            +INF            EPS         
+T.M.Tipo2          .              .            +INF            EPS         
+T.A.Tipo1          .              .            +INF             .          
+T.A.Tipo2          .              .            +INF             .          
+M.G.Tipo1          .              .            +INF            EPS         
+M.G.Tipo2          .              .            +INF            EPS         
+M.D.Tipo1          .              .            +INF            EPS         
+M.D.Tipo2          .              .            +INF            EPS         
+M.T.Tipo1          .              .            +INF            EPS         
+M.T.Tipo2          .              .            +INF            EPS         
+M.Z.Tipo1          .           118.3333        +INF             .          
+M.Z.Tipo2          .           107.5000        +INF             .          
+A.T.Tipo1          .              .            +INF            EPS         
+A.T.Tipo2          .              .            +INF            EPS         
+A.Z.Tipo1          .              .            +INF            EPS         
+A.Z.Tipo2          .              .            +INF            EPS         
+Z.M.Tipo1          .              .            +INF            EPS         
+Z.M.Tipo2          .              .            +INF            EPS         
+Z.A.Tipo1          .              .            +INF            EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 55
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+     VAR X  numero de vehiculos k de ciudad i a j
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2          .            66.6667        +INF             .          
+
+---- VAR carga  carga de ciudad i a j con vehiculo tipo k
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1          .              .            +INF            EPS         
+N.G.Tipo2          .              .            +INF            EPS         
+N.D.Tipo1          .            87.5000        +INF             .          
+N.D.Tipo2          .              .            +INF            EPS         
+N.T.Tipo1          .              .            +INF            EPS         
+N.T.Tipo2          .              .            +INF            EPS         
+G.N.Tipo1          .              .            +INF            EPS         
+G.N.Tipo2          .              .            +INF            EPS         
+G.D.Tipo1          .              .            +INF            EPS         
+G.D.Tipo2          .              .            +INF            EPS         
+G.M.Tipo1          .            82.5000        +INF             .          
+G.M.Tipo2          .           330.0000        +INF             .          
+D.N.Tipo1          .              .            +INF            EPS         
+D.N.Tipo2          .              .            +INF            EPS         
+D.G.Tipo1          .              .            +INF            EPS         
+D.G.Tipo2          .              .            +INF            EPS         
+D.T.Tipo1          .              .            +INF            EPS         
+D.T.Tipo2          .              .            +INF            EPS         
+D.M.Tipo1          .            87.5000        +INF             .          
+D.M.Tipo2          .              .            +INF            EPS         
+T.N.Tipo1          .              .            +INF            EPS         
+T.N.Tipo2          .              .            +INF            EPS         
+T.D.Tipo1          .              .            +INF            EPS         
+T.D.Tipo2          .              .            +INF            EPS         
+T.M.Tipo1          .              .            +INF            EPS         
+T.M.Tipo2          .              .            +INF            EPS         
+T.A.Tipo1          .              .            +INF            EPS         
+T.A.Tipo2          .              .            +INF            EPS         
+M.G.Tipo1          .              .            +INF            EPS         
+M.G.Tipo2          .              .            +INF            EPS         
+M.D.Tipo1          .              .            +INF            EPS         
+M.D.Tipo2          .              .            +INF            EPS         
+M.T.Tipo1          .              .            +INF            EPS         
+M.T.Tipo2          .              .            +INF            EPS         
+M.Z.Tipo1          .           177.5000        +INF             .          
+M.Z.Tipo2          .           322.5000        +INF             .          
+A.T.Tipo1          .              .            +INF            EPS         
+A.T.Tipo2          .              .            +INF            EPS         
+A.Z.Tipo1          .              .            +INF            EPS         
+A.Z.Tipo2          .              .            +INF            EPS         
+Z.M.Tipo1          .              .            +INF            EPS         
+Z.M.Tipo2          .              .            +INF            EPS         
+Z.A.Tipo1          .              .            +INF            EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 56
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+     VAR carga  carga de ciudad i a j con vehiculo tipo k
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2          .           200.0000        +INF             .          
+
+---- VAR Y  uno si vehiculo tipo k viaja de i a j
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+N.G.Tipo1          .              .             1.0000         EPS         
+N.G.Tipo2          .             1.0000         1.0000         EPS         
+N.D.Tipo1          .             1.0000         1.0000     10000.0000      
+N.D.Tipo2          .              .             1.0000         EPS         
+N.T.Tipo1          .              .             1.0000         EPS         
+N.T.Tipo2          .              .             1.0000         EPS         
+G.N.Tipo1          .              .             1.0000         EPS         
+G.N.Tipo2          .              .             1.0000         EPS         
+G.D.Tipo1          .              .             1.0000         EPS         
+G.D.Tipo2          .              .             1.0000         EPS         
+G.M.Tipo1          .             1.0000         1.0000     10000.0000      
+G.M.Tipo2          .             1.0000         1.0000         EPS         
+D.N.Tipo1          .              .             1.0000         EPS         
+D.N.Tipo2          .              .             1.0000         EPS         
+D.G.Tipo1          .              .             1.0000         EPS         
+D.G.Tipo2          .             1.0000         1.0000     10000.0000      
+D.T.Tipo1          .              .             1.0000         EPS         
+D.T.Tipo2          .              .             1.0000         EPS         
+D.M.Tipo1          .             1.0000         1.0000         EPS         
+D.M.Tipo2          .              .             1.0000         EPS         
+T.N.Tipo1          .              .             1.0000         EPS         
+T.N.Tipo2          .             1.0000         1.0000     10000.0000      
+T.D.Tipo1          .              .             1.0000         EPS         
+T.D.Tipo2          .              .             1.0000         EPS         
+T.M.Tipo1          .              .             1.0000         EPS         
+T.M.Tipo2          .              .             1.0000         EPS         
+T.A.Tipo1          .             1.0000         1.0000         EPS         
+T.A.Tipo2          .             1.0000         1.0000         EPS         
+M.G.Tipo1          .              .             1.0000         EPS         
+M.G.Tipo2          .              .             1.0000         EPS         
+M.D.Tipo1          .              .             1.0000         EPS         
+M.D.Tipo2          .              .             1.0000         EPS         
+M.T.Tipo1          .              .             1.0000         EPS         
+M.T.Tipo2          .              .             1.0000         EPS         
+M.Z.Tipo1          .             1.0000         1.0000     10000.0000      
+M.Z.Tipo2          .             1.0000         1.0000         EPS         
+A.T.Tipo1          .              .             1.0000         EPS         
+A.T.Tipo2          .              .             1.0000         EPS         
+A.Z.Tipo1          .              .             1.0000         EPS         
+A.Z.Tipo2          .              .             1.0000         EPS         
+Z.M.Tipo1          .              .             1.0000         EPS         
+Z.M.Tipo2          .              .             1.0000         EPS         
+Z.A.Tipo1          .              .             1.0000         EPS         
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 57
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
+
+
+     VAR Y  uno si vehiculo tipo k viaja de i a j
+
+                 LOWER          LEVEL          UPPER         MARGINAL
+
+Z.A.Tipo2          .             1.0000         1.0000     10000.0000      
+
+---- VAR load  cantidad de carga que se queda en i
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+N          .           712.5000        +INF             .          
+G          .            87.5000        +INF             .          
+D          .              .            +INF            EPS         
+T          .              .            +INF            EPS         
+M          .              .            +INF            EPS         
+A          .           200.0000        +INF             .          
+Z          .           300.0000        +INF             .          
+
+---- VAR Time  tiempo en llegar a la ciudad i
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+N          .            15.0000        +INF             .          
+G          .            18.2500        +INF             .          
+D          .            17.0000        +INF             .          
+T          .              .            +INF            1.0000      
+M          .            78.2500        +INF             .          
+A          .            94.2500        +INF             .          
+Z          .            83.2500        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR Coste             -INF        78018.7500        +INF             .          
+---- VAR Equidad           -INF            0.2667        +INF             .          
+---- VAR Tiempo            -INF           94.2500        +INF             .          
 
   Coste  Coste total
 
@@ -1576,7 +2804,10 @@ Z          .           142.8571        +INF             .
                              0  UNBOUNDED
 
 
-EXECUTION TIME       =        0.004 SECONDS      2 MB  24.4.2 r51415 DEX-DEG
+EXECUTION TIME       =        0.011 SECONDS      2 MB  24.4.2 r51415 DEX-DEG
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                   05/21/15 16:42:14 Page 58
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE thetime Using MIP From line 257
 
 
 USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
