@@ -1,0 +1,84 @@
+\documentclass[]{article}
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+
+%opening
+\title{Emergencia en Níger}
+\author{Grupo 14: Bianca Dufour \& William Hedén}
+
+\begin{document}
+
+\maketitle
+
+\noindent Se trata del problema de determinar el esquema óptimo de ayudar la emergencia en Níger en un dia.
+\section{Conjuntos}
+\begin{align*}
+	i,j&: \text{Ciudad}, \quad i=1,\dots,7\\
+	k&: \text{Tipo de vehiculo}, \quad j=1, 2
+\end{align*}
+
+\section{Parámetros}
+\begin{align*}
+	av_i &: \text{Ayuda disponible en ciudad i}\\
+	d_i &: \text{Demanda de ayuda en ciudad j}\\
+	cota_k &: \text{Cota superior de k}\\
+	cap_k &: \text{Capacidad de ayuda de vehiculo k}\\
+	velv_k &: \text{Velocidad vehículo k}\\
+	cf_k &: \text{Un coste fijo para la conducción con el coche k por kilometro.}\\
+	cv &: \text{Un coste fijo para mover una unidad de carga por kilometro.}\\
+	velc_{i,j} &: \text{??????}\\
+	vav_{k,i} &: \text{Número de vehiculos k disponibles en ciudad i.}\\
+	dist_{i,j} &: \text{Distancia entre la ciudad i y j en kilometros.}\\
+	budget &: \text{El coste total no puede superar el presupuesto.}\\
+	qglobal &: \text{Este dia solo podemos enviar una carga total de qglobal.}
+\end{align*}
+
+\section{Variables}
+\begin{align*}
+		X_{i,j,k} &: \text{Número de vehículos k que van entre ciudad i y j.}\\
+		carga_{i,j,k} &: \text{Cantidad de carga que van entre ciudad i y j con vehículo k.}\\
+		Y_{i,j,k} &=
+		\begin{cases}
+		1 & \quad \text{si vehículo tipo k va de ciudad i a j.} \\
+		0 & \quad \text{si no}\\
+		\end{cases}\\
+		load_i &: \text{Cantidad de carga que se queda en ciudad i.}\\
+		Time_i &: \text{Tiempo en llegar a ciudad i.}\\ \\
+		Coste &: \text{Coste total del ayuda a Níger.}\\
+		Equidad &: \text{La carga que se queda en ciudad i dividido por la demanda de ciudad i.}\\
+		Tiempo &: \text{El tiempo total del ayuda a Níger.}
+\end{align*}
+
+\section{Modelo}
+Queremos hacer tres cosas en este modelo:
+\begin{itemize}
+	\item Minimizar el coste del ayuda total.
+	\item Maximizar el equidad entre Agadez y Zinder.
+	\item Minimizar el tiempo de hacer el operación.
+\end{itemize}
+Vamos a tratarlas una a una, y después resolvemos como una problema multiobjectivo por metas.
+
+\begin{align*}
+	\min \; & Coste = \sum_{i,j,k} dist_{i,j}\cdot (2\cdot X_{i,j,k}\cdot cf_{k}+cv\cdot carga_{i,j,k}), \quad \forall (i,j) \mid dist_{i,j} > 0\\
+	\max \; & Equidad \leq  \frac{load_i}{d_i}, \quad \forall i \mid d_i > 0\\
+	\min \; & Tiempo \geq Time_i, \quad \forall i \mid d_i > 0\\ \\
+	\text{restricciónes:}&\\
+	\forall j, \quad &\sum_{i,k \textbackslash \{(i,j) \mid dist_{i,j} \leq 0\}} carga_{i,j,k} + av_j = \sum_{i,k \textbackslash \{(i,j) \mid dist_{j,i} \leq 0\}}  carga_{j,i,k} + load_j\\
+	\forall j,k, \quad &\sum_{i \textbackslash \{(i,j) \mid dist_{i,j} \leq 0\}} X_{i,j,k} + vav_{k,j} \geq \sum_{i \textbackslash \{(i,j) \mid dist_{j,i} \leq 0\}} X_{j,i,k}\\
+	\forall j, \quad &load_j \leq d_j + av_j\\
+	\forall j \mid d_j > 0, \quad &\sum_j load_j = qglobal\\
+	\forall i,j,k \mid dist_{i,j} > 0, \quad & carga_{i,j,k} \leq cap_k \cdot X_{i,j,k}\\
+	& Coste \leq budget\\
+	\forall i,j,k \mid dist_{i,j} > 0, \quad & Time_j \geq Time_i + \frac{dist_{i,j}}{\min(velv_k, velc_{i,j})} - 10000\cdot (1-Y_{i,j,k})\\
+	\forall i,j,k \mid dist_{i,j} > 0, \quad & X_{i,j,k} \leq cota_k \cdot Y_{i,j,k}
+\end{align*}
+
+\section{Solucion}
+
+\section{Codigo GAMS}
+
+\end{document}

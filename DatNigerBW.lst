@@ -1,0 +1,326 @@
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  SETS
+   2   
+   3          i / N,G,D,T,M,A,Z /
+   4          m / C, E, TM, R /
+   5          k / Tipo1, Tipo2/
+   6          alias (j,i);
+   7   
+   8  PARAMETERS
+   9          cota(k)
+  10          /
+  11                  Tipo1            200
+  12                  Tipo2            200
+  13  *                Tipo3            40
+  14          /
+  15   
+  16          av(i)
+  17          /
+  18                  N               800
+  19                  G               500
+  20                  D               0
+  21                  T               0
+  22                  M               0
+  23                  A               0
+  24                  Z               0
+  25          /
+  26   
+  27          d(i)
+  28          /
+  29                  N               0
+  30                  G               0
+  31                  D               0
+  32                  T               0
+  33                  M               0
+  34                  A               750
+  35                  Z               300
+  36          /
+  37   
+  38          cap(k)
+  39          /
+  40                  Tipo1            1.5
+  41                  Tipo2            2
+  42  *               Tipo3            3
+  43          /
+  44   
+  45          velv(k)
+  46          /
+  47                  Tipo1    90
+  48                  Tipo2    95
+  49  *                Tipo3    85
+  50          /
+  51   
+  52          alpha(m)
+  53          /
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+  54                  C      1
+  55                  E      1
+  56                  TM     1
+  57                  R      1
+  58          /
+  59          t(m)
+  60          /
+  61                  C      70000
+  62                  E      0.4
+  63                  TM     100
+  64                  R      0.997
+  65          /
+  66   
+  67          qglobal
+  68          budget
+  69          logprob(i,j)
+  70          logrel(i,j)
+  71          dist(i,j)
+  72  ;
+  73   
+  74  TABLE cf(i,j,k)
+  75   
+  76                       N.Tipo1          G.Tipo1         D.Tipo1          T.Tipo1          M.Tipo1          A.Tipo1            Z.Tipo1
+  77          N               0               10               10               10               10               10                10
+  78          G               10              0                10               10               10               10                10
+  79          D               10              10               0                10               10               10                10
+  80          T               10              10               10               0                10               10                10
+  81          M               10              10               10               10               0                10                10
+  82          A               10              10               10               10               10               0                 10
+  83          Z               10              10               10               10               10               10                0
+  84   
+  85          +            N.Tipo2          G.Tipo2         D.Tipo2           T.Tipo2         M.Tipo2           A.Tipo2            Z.Tipo2
+  86          N               0                15               15               15               15               15                15
+  87          G               15               0                15               15               15               15                15
+  88          D               15               15               0                15               15               15                15
+  89          T               15               15               15               0                15               15                15
+  90          M               15               15               15               15               0                15                15
+  91          A               15               15               15               15               15               0                 15
+  92          Z               15               15               15               15               15               15                0
+  93   
+  94  *        +             N.Tipo3          G.Tipo3         D.Tipo3          T.Tipo3          M.Tipo3          A.Tipo3            Z.Tipo3
+  95  *        N               0                20               20               20               20               20                20
+  96  *        G               20               0                20               20               20               20                20
+  97  *        D               20               20               0                20               20               20                20
+  98  *        T               20               20               20               0                20               20                20
+  99  *        M               20               20               20               20               0                20                20
+ 100  *        A               20               20               20               20               20               0                 20
+ 101  *        Z               20               20               20               20               20               20                0
+ 102  ;
+ 103   
+ 104  TABLE cv(i,j)
+ 105   
+ 106                          N                  G                 D                 T                 M                 A                  Z
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+ 107          N               0                 2.5               2.5               2.5               2.5               2.5                2.5
+ 108          G               2.5               0                 2.5               2.5               2.5               2.5                2.5
+ 109          D               2.5               2.5               0                 2.5               2.5               2.5                2.5
+ 110          T               2.5               2.5               2.5               0                 2.5               2.5                2.5
+ 111          M               2.5               2.5               2.5               2.5               0                 2.5                2.5
+ 112          A               2.5               2.5               2.5               2.5               2.5               0                  2.5
+ 113          Z               2.5               2.5               2.5               2.5               2.5               2.5                0
+ 114   
+ 115  ;
+ 116   
+ 117  TABLE velc(i,j)
+ 118   
+ 119                          N               G               D               T               M               A               Z
+ 120          N               0               80              50              30              80              20              40
+ 121          G               80              0               80              50              10              20              20
+ 122          D               50              80              0               10              10              10              20
+ 123          T               30              50              10              0               50              90              50
+ 124          M               80              10              10              50              0               10              50
+ 125          A               20              20              10              90              10              0               50
+ 126          Z               40              20              20              50              50              50              0
+ 127  ;
+ 128   
+      TABLE prob(i,j)
+       
+                              N        G        D        T        M        A        Z
+              N               1        0.9783   0.9782   0.978    1        1        1
+              G               0.9783   1        0.9786   1        0.9789   1        1
+              D               0.9782   0.9786   1        0.9791   0.9788   1        1
+              T               0.978    1        0.9791   1        0.9785   0.9791   1
+              M               1        0.9789   0.9788   0.9789   1        1        0.9787
+              A               1        1        1        0.9791   1        1        0.9792
+              Z               1        1        1        1        0.9787   0.9792   1
+       
+      ;
+       
+       
+      *TABLE rel(i,j)
+      *
+                              N             G             D             T             M             A             Z
+              N               0.000001      0.9983        0.9982        0.998         0.000001      0.000001      0.000001
+              G               0.9983        0.000001      0.9986        0.000001      0.9989        0.000001      0.000001
+              D               0.9982        0.9986        0.000001      0.9991        0.9955        0.000001      0.000001
+              T               0.998         0.000001      0.9991        0.000001      0.9985        0.9991        0.000001
+              M               0.000001      0.9989        0.9955        0.9989        0.000001      0.000001      0.9987
+              A               0.000001      0.000001      0.000001      0.9991        0.000001      0.000001      0.9992
+              Z               0.000001      0.000001      0.000001      0.000001      0.9987        0.9992        0.000001
+      ;
+ 156  TABLE vav(k,i)
+ 157   
+ 158                          N               G               D               T               M               A               Z
+ 159          Tipo1           60              55              10              8               5               0               0
+ 160          Tipo2           30              45              15              28              5               0               0
+ 161  *        Tipo3           20              40              20              30              5               0               0
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+ 162  ;
+ 163  TABLE dist(i,j) distancia de i a j
+ 164                         N        G        D        T        M        A        Z
+ 165          N              0       200      100      450       0        0        0
+ 166          G             200       0       100       0       600       0        0
+ 167          D             100      100       0       350      400       0        0
+ 168          T             450       0       350       0       250      400       0
+ 169          M              0       600      400      250       0        0       250
+ 170          A              0        0        0       400       0        0       550
+ 171          Z              0        0        0        0       250      550       0;
+ 172   
+      TABLE dist(i,j) distancia de i a j
+                             N        G        D        T        M        A        Z
+              N              0       200      100      450       0        0        0
+              G              0        0       100       0       600       0        0
+              D              0        0        0       350      400       0        0
+              T              0        0        0        0       250      400       0
+              M              0        0        0        0        0        0       250
+              A              0        0        0        0        0        0       550
+              Z              0        0        0        0        0        0        0
+      ;
+ 185   
+ 186  budget = 80000 ;
+ 187  qglobal = 500 ;
+ 188  cf(i,j,k)=cf(i,j,k)/100;
+ 189  cv(i,j)=cv(i,j)/100;
+ 190  *logprob(i,j) = log(prob(i,j));
+ 191  *logrel(i,j) = log(rel(i,j));
+ 192   
+ 193  VARIABLES
+ 194  X(i,j,k) numero de vehiculos k de ciudad i a j
+ 195  carga(i,j,k) carga de ciudad i a j con vehiculo tipo k
+ 196  Y(i,j,k) uno si vehiculo tipo k viaja de i a j
+ 197  load(i) cantidad de carga que se queda en i
+ 198  Time(i,k) tiempo en llegar a la ciudad i con vehiculo k
+ 199  *cairstay(i,k) numero de vehiculos k que se queda en i
+ 200  Coste Coste total
+ 201  Equidad
+ 202  Tiempo
+ 203  ;
+ 204  positive variable X
+ 205  positive variable carga
+ 206  positive variable load
+ 207  positive variable Time
+ 208  binary variable Y
+ 209  *positive variable carstay
+ 210   
+ 211  EQUATIONS
+ 212  FOBJETIVO1 restriccion de la funcion objectivo cost
+ 213  FOBJETIVO2 equidad
+ 214  FOBJETIVO3 tiempo
+ 215   
+ 216  flujoAyuda lo que sale tiene que ser igual a lo que llega
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+ 217  flujoCoche lo que sale tiene que ser igual o menor a lo que llega
+ 218  flow lo que queda tiene que ser menor que la demanda mas la oferta
+ 219  demandatot lo que llega de A y Z es igual a quinientos
+ 220  cargacapa la carga tiene que ser menor que lo que podemos transportar
+ 221  maxbudget budget maximo
+ 222  resTiempo
+ 223  res8
+ 224  *oferta la carga tiene que empezar en N y G
+ 225  ;
+ 226   
+ 227  FOBJETIVO1.. Coste =E= SUM((i,j,k)$(dist(i,j)>0), dist(i,j)*(2*X(i,j,k)*cf(i,j,k)+cv(i,j)*carga(i,j,k)));
+ 228  FOBJETIVO2(i)$(d(i)>0).. Equidad =L= load(i)/d(i);
+ 229  FOBJETIVO3(i)$(d(i)>0).. Tiempo =G= Time(i);
+****                                            $148
+ 230   
+ 231  flujoAyuda(j).. SUM((i,k)$(dist(i,j) > 0), carga(i,j,k)) + av(j) =E= SUM((i,k)$(dist(j,i) > 0), carga(j,i,k)) + load(j);
+ 232  flujoCoche(j,k).. SUM(i$(dist(i,j) > 0), X(i,j,k)) + vav(k,j) =G= SUM(i$(dist(j,i) > 0), X(j,i,k));
+ 233  flow(j).. load(j) =L= d(j)+av(j);
+ 234  demandatot.. load('A')+load('Z') =E= qglobal;
+ 235  cargacapa(i,j,k)$(dist(i,j) > 0).. carga(i,j,k) =L= cap(k)*X(i,j,k);
+ 236  maxbudget.. Coste =L= budget;
+ 237   
+ 238  resTiempo(i,j,k)$(dist(i,j)>0).. Time(j,k) =G= Time(i,k) + (dist(i,j)/(min(velv(k), velc(i,j)))) - 10000*(1-Y(i,j,k));
+ 239  res8(i,j,k)$(dist(i,j)>0).. X(i,j,k) =L= cota(k)*Y(i,j,k);
+ 240   
+ 241   
+ 242  *oferta.. carga('N','D')+carga('N','T')+carga('G','D')+carga('G','M') =E= qglobal;
+ 243  *flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k))+ vav(k,j) =E= SUM(i$(dist(j,i) gt 0), X(j,i,k))+carstay(j,k);
+ 244   
+ 245   
+ 246  options optcr=0;
+ 247   
+ 248  model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+ 249  solve thecost minimize Coste using MIP;
+****                                        $257
+ 250   
+ 251  model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+ 252  solve theequality maximize Equidad using MIP;
+****                                              $257
+ 253   
+ 254  model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+ 255  solve thetime minimize Tiempo using MIP;
+****                                         $257
+ 256   
+ 257   
+ 258  *$(dist(i,j) gt 0),
+ 259   
+ 260  *min coste
+ 261  *min tiempo
+ 262  *min equidad
+ 263  *-> matriz de pagos
+ 264   
+ 265  *min p_1+p_2
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+ 266  *coste+n_1-p_1 = meta_c
+ 267  *tiempo+n_2-p_2 = meta_t
+ 268  *equidad +n_3-p_3 = 0
+ 269   
+ 270  *Hasta 25 de mayo
+ 271  *Programacion multiobjectivo por metas
+GAMS 24.4.2  r51415 Released Mar 15, 2015 DEX-DEG x86 64bit/MacOS X                                                                                                                                                                    05/20/15 21:53:18 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+148  Dimension different - The symbol is referenced with more/less
+        indices as declared
+257  Solve statement not checked because of previous errors
+
+**** 4 ERROR(S)   0 WARNING(S)
+
+
+COMPILATION TIME     =        0.117 SECONDS      3 MB  24.4.2 r51415 DEX-DEG
+
+
+USER: GAMS Development Corporation, Washington, DC   G871201/0000CA-ANY
+      Free Demo,  202-342-0180,  sales@gams.com,  www.gams.com   DC0000
+
+
+**** FILE SUMMARY
+
+Input      /Users/williamheden/Documents/GitHub/Plani-Humanitaria/DatNigerBW.gms
+Output     /Users/williamheden/Documents/GitHub/Plani-Humanitaria/DatNigerBW.lst
+
+**** USER ERROR(S) ENCOUNTERED

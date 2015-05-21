@@ -2,10 +2,16 @@ SETS
 
         i / N,G,D,T,M,A,Z /
         m / C, E, TM, R /
-        k / Tipo1, Tipo2, Tipo3 /
+        k / Tipo1, Tipo2/
         alias (j,i);
 
 PARAMETERS
+        cota(k)
+        /
+                Tipo1            200
+                Tipo2            200
+*                Tipo3            40
+        /
 
         av(i)
         /
@@ -15,7 +21,8 @@ PARAMETERS
                 T               0
                 M               0
                 A               0
-                Z               0 /
+                Z               0 
+        /
 
         d(i)
         /
@@ -25,19 +32,22 @@ PARAMETERS
                 T               0
                 M               0
                 A               750
-                Z               300 /
+                Z               300 
+        /
 
-         cap(k)
-         /
+        cap(k)
+        /
                 Tipo1            1.5
                 Tipo2            2
-                Tipo3            3
-/
+*               Tipo3            3
+        /
+        
         velv(k)
-        /Tipo1    90
-         Tipo2    95
-         Tipo3    85
-/
+        /
+                Tipo1    90
+                Tipo2    95
+*                Tipo3    85
+        /
 
         alpha(m)
         /
@@ -45,13 +55,14 @@ PARAMETERS
                 E      1
                 TM     1
                 R      1
-                /
+        /
         t(m)
         /
                 C      70000
                 E      0.4
                 TM     100
-                R      0.997/
+                R      0.997
+        /
 
         qglobal
         budget
@@ -80,15 +91,14 @@ TABLE cf(i,j,k)
         A               15               15               15               15               15               0                 15
         Z               15               15               15               15               15               15                0
 
-        +             N.Tipo3          G.Tipo3         D.Tipo3          T.Tipo3          M.Tipo3          A.Tipo3            Z.Tipo3
-        N               0                20               20               20               20               20                20
-        G               20               0                20               20               20               20                20
-        D               20               20               0                20               20               20                20
-        T               20               20               20               0                20               20                20
-        M               20               20               20               20               0                20                20
-        A               20               20               20               20               20               0                 20
-        Z               20               20               20               20               20               20                0
-
+*        +             N.Tipo3          G.Tipo3         D.Tipo3          T.Tipo3          M.Tipo3          A.Tipo3            Z.Tipo3
+*        N               0                20               20               20               20               20                20
+*        G               20               0                20               20               20               20                20
+*        D               20               20               0                20               20               20                20
+*        T               20               20               20               0                20               20                20
+*        M               20               20               20               20               0                20                20
+*        A               20               20               20               20               20               0                 20
+*        Z               20               20               20               20               20               20                0
 ;
 
 TABLE cv(i,j)
@@ -148,18 +158,19 @@ TABLE vav(k,i)
                         N               G               D               T               M               A               Z
         Tipo1           60              55              10              8               5               0               0
         Tipo2           30              45              15              28              5               0               0
-        Tipo3           20              40              20              30              5               0               0
+*        Tipo3           20              40              20              30              5               0               0
 ;
-*TABLE dist(i,j) distancia de i a j
-*                       N        G        D        T        M        A        Z
-*        N              0       200      100      450       0        0        0
-*        G             200       0       100       0       600       0        0
-*        D             100      100       0       350      400       0        0
-*        T             450       0       350       0       250      400       0
-*        M              0       600      400      250       0        0       250
-*        A              0        0        0       400       0        0       550
-*        Z              0        0        0        0       250      550       0
-*;
+TABLE dist(i,j) distancia de i a j
+                       N        G        D        T        M        A        Z
+        N              0       200      100      450       0        0        0
+        G             200       0       100       0       600       0        0
+        D             100      100       0       350      400       0        0
+        T             450       0       350       0       250      400       0
+        M              0       600      400      250       0        0       250
+        A              0        0        0       400       0        0       550
+        Z              0        0        0        0       250      550       0;
+
+$ontext
 TABLE dist(i,j) distancia de i a j
                        N        G        D        T        M        A        Z
         N              0       200      100      450       0        0        0
@@ -170,6 +181,8 @@ TABLE dist(i,j) distancia de i a j
         A              0        0        0        0        0        0       550
         Z              0        0        0        0        0        0        0
 ;
+$offtext
+
 budget = 80000 ;
 qglobal = 500 ;
 cf(i,j,k)=cf(i,j,k)/100;
@@ -182,7 +195,7 @@ X(i,j,k) numero de vehiculos k de ciudad i a j
 carga(i,j,k) carga de ciudad i a j con vehiculo tipo k
 Y(i,j,k) uno si vehiculo tipo k viaja de i a j
 load(i) cantidad de carga que se queda en i
-T(i) tiempo en llegar a la ciudad i 
+Time(i) tiempo en llegar a la ciudad i 
 *cairstay(i,k) numero de vehiculos k que se queda en i
 Coste Coste total
 Equidad 
@@ -191,44 +204,55 @@ Tiempo
 positive variable X
 positive variable carga
 positive variable load
-positive variable carstay
+positive variable Time
 binary variable Y
+*positive variable carstay
 
 EQUATIONS
-
 FOBJETIVO1 restriccion de la funcion objectivo cost
 FOBJETIVO2 equidad 
 FOBJETIVO3 tiempo
+
 flujoAyuda lo que sale tiene que ser igual a lo que llega
 flujoCoche lo que sale tiene que ser igual o menor a lo que llega
 flow lo que queda tiene que ser menor que la demanda mas la oferta
-demandatot lo que llega de A y Z es igual a 500
+demandatot lo que llega de A y Z es igual a quinientos
 cargacapa la carga tiene que ser menor que lo que podemos transportar
-oferta la carga tiene que empezar en N y G
-*maxbudget budget maximo
+maxbudget budget maximo
+resTiempo
+res8
+*oferta la carga tiene que empezar en N y G
 ;
 
-FOBJECTIVO1.. Coste =E= SUM((i,j,k)$(dist(i,j)>0), dist(i,j)*(2*X(i,j,k)*cf(i,j,k)+cv(i,j)*carga(i,j,k)));
+FOBJETIVO1.. Coste =E= SUM((i,j,k)$(dist(i,j)>0), dist(i,j)*(2*X(i,j,k)*cf(i,j,k)+cv(i,j)*carga(i,j,k)));
 FOBJETIVO2(i)$(d(i)>0).. Equidad =L= load(i)/d(i);
-FOBJETIVO3(i)$(d(i)>0).. Tiempo =G= T(i);
+FOBJETIVO3(i)$(d(i)>0).. Tiempo =G= Time(i);
 
-flujoAyuda(j).. SUM(i$(dist(i,j) gt 0), carga(i,j,k)) + av(j)=E= SUM(i$(dist(j,i) gt 0), carga(j,i,k))+load(j);
-*flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k))+ vav(k,j) =E= SUM(i$(dist(j,i) gt 0), X(j,i,k))+carstay(j,k);
-flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k)) + vav(k,j) =G= SUM(i$(dist(j,i) gt 0), X(j,i,k));
+flujoAyuda(j).. SUM((i,k)$(dist(i,j) > 0), carga(i,j,k)) + av(j) =E= SUM((i,k)$(dist(j,i) > 0), carga(j,i,k)) + load(j);
+flujoCoche(j,k).. SUM(i$(dist(i,j) > 0), X(i,j,k)) + vav(k,j) =G= SUM(i$(dist(j,i) > 0), X(j,i,k));
 flow(j).. load(j) =L= d(j)+av(j);
 demandatot.. load('A')+load('Z') =E= qglobal;
-cargacapa(i,j,k)$(dist(i,j) gt 0).. carga(i,j,k) =L= cap(k)*X(i,j,k);
-
-N(i,j,k =L= cotac(k)*Y(i,j,k);
-resTiempo(i,j,k).. $(dist(i,j)>0) T(j)=g= T(i)+dist(i,j)/(min/(velvv(k), velc(i,j))-10000*(1-Y(i,j,k))
-*oferta.. carga('N','D')+carga('N','T')+carga('G','D')+carga('G','M') =E= qglobal;
-
+cargacapa(i,j,k)$(dist(i,j) > 0).. carga(i,j,k) =L= cap(k)*X(i,j,k);
 maxbudget.. Coste =L= budget;
+
+resTiempo(i,j,k)$(dist(i,j)>0).. Time(j) =G= Time(i) + (dist(i,j)/(min(velv(k), velc(i,j)))) - 10000*(1-Y(i,j,k));
+res8(i,j,k)$(dist(i,j)>0).. X(i,j,k) =L= cota(k)*Y(i,j,k);
+
+
+*oferta.. carga('N','D')+carga('N','T')+carga('G','D')+carga('G','M') =E= qglobal;
+*flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k))+ vav(k,j) =E= SUM(i$(dist(j,i) gt 0), X(j,i,k))+carstay(j,k);
+
 
 options optcr=0;
 
-model pepito /all/;
-solve pepito minimize Coste using MIP;
+model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+solve thecost minimize Coste using MIP;
+
+model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
+solve theequality maximize Equidad using MIP;
+
+*model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+*solve thetime minimize Tiempo using MIP;
 
 
 *$(dist(i,j) gt 0),
