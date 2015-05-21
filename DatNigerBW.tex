@@ -30,7 +30,7 @@
 	velv_k &: \text{Velocidad vehículo k}\\
 	cf_k &: \text{Un coste fijo para la conducción con el coche k por kilometro.}\\
 	cv &: \text{Un coste fijo para mover una unidad de carga por kilometro.}\\
-	velc_{i,j} &: \text{??????}\\
+	velc_{i,j} &: \text{Velocidad máximo en el camino entre ciudad i y j.}\\
 	vav_{k,i} &: \text{Número de vehiculos k disponibles en ciudad i.}\\
 	dist_{i,j} &: \text{Distancia entre la ciudad i y j en kilometros.}\\
 	budget &: \text{El coste total no puede superar el presupuesto.}\\
@@ -63,12 +63,12 @@ Queremos hacer tres cosas en este modelo:
 Vamos a tratarlas una a una, y después resolvemos como una problema multiobjectivo por metas.
 
 \begin{align*}
-	\min \; & Coste = \sum_{i,j,k} dist_{i,j}\cdot (2\cdot X_{i,j,k}\cdot cf_{k}+cv\cdot carga_{i,j,k}), \quad \forall (i,j) \mid dist_{i,j} > 0\\
+	\min \; & Coste = \sum_{i,j,k \mid dist_{i,j} > 0} dist_{i,j}\cdot (2\cdot X_{i,j,k}\cdot cf_{k}+cv\cdot carga_{i,j,k})\\
 	\max \; & Equidad \leq  \frac{load_i}{d_i}, \quad \forall i \mid d_i > 0\\
 	\min \; & Tiempo \geq Time_i, \quad \forall i \mid d_i > 0\\ \\
 	\text{restricciónes:}&\\
-	\forall j, \quad &\sum_{i,k \textbackslash \{(i,j) \mid dist_{i,j} \leq 0\}} carga_{i,j,k} + av_j = \sum_{i,k \textbackslash \{(i,j) \mid dist_{j,i} \leq 0\}}  carga_{j,i,k} + load_j\\
-	\forall j,k, \quad &\sum_{i \textbackslash \{(i,j) \mid dist_{i,j} \leq 0\}} X_{i,j,k} + vav_{k,j} \geq \sum_{i \textbackslash \{(i,j) \mid dist_{j,i} \leq 0\}} X_{j,i,k}\\
+	\forall j, \quad &\sum_{i,k \mid dist_{i,j} > 0} carga_{i,j,k} + av_j = \sum_{i,k \mid dist_{j,i} > 0}  carga_{j,i,k} + load_j\\
+	\forall j,k, \quad &\sum_{i \mid dist_{i,j} > 0} X_{i,j,k} + vav_{k,j} \geq \sum_{i \mid dist_{j,i} > 0} X_{j,i,k}\\
 	\forall j, \quad &load_j \leq d_j + av_j\\
 	\forall j \mid d_j > 0, \quad &\sum_j load_j = qglobal\\
 	\forall i,j,k \mid dist_{i,j} > 0, \quad & carga_{i,j,k} \leq cap_k \cdot X_{i,j,k}\\
@@ -78,7 +78,11 @@ Vamos a tratarlas una a una, y después resolvemos como una problema multiobject
 \end{align*}
 
 \section{Solucion}
-
+\begin{itemize}
+	\item Minimizar el coste del ayuda total = 75703.3333
+	\item Maximizar el equidad entre Agadez y Zinder = 0.4762
+	\item Minimizar el tiempo de hacer el operación.
+\end{itemize}
 \section{Codigo GAMS}
 
 \end{document}

@@ -8,8 +8,8 @@ SETS
 PARAMETERS
         cota(k)
         /
-                Tipo1            200
-                Tipo2            200
+                Tipo1            100
+                Tipo2            100
 *                Tipo3            40
         /
 
@@ -238,7 +238,6 @@ maxbudget.. Coste =L= budget;
 resTiempo(i,j,k)$(dist(i,j)>0).. Time(j) =G= Time(i) + (dist(i,j)/(min(velv(k), velc(i,j)))) - 10000*(1-Y(i,j,k));
 res8(i,j,k)$(dist(i,j)>0).. X(i,j,k) =L= cota(k)*Y(i,j,k);
 
-
 *oferta.. carga('N','D')+carga('N','T')+carga('G','D')+carga('G','M') =E= qglobal;
 *flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k))+ vav(k,j) =E= SUM(i$(dist(j,i) gt 0), X(j,i,k))+carstay(j,k);
 
@@ -251,8 +250,8 @@ solve thecost minimize Coste using MIP;
 model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8/;
 solve theequality maximize Equidad using MIP;
 
-*model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
-*solve thetime minimize Tiempo using MIP;
+model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
+solve thetime minimize Tiempo using MIP;
 
 
 *$(dist(i,j) gt 0),
