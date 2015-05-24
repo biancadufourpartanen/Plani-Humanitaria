@@ -14,7 +14,7 @@
 
 \maketitle
 
-\noindent Se trata del problema de determinar el esquema óptimo de ayudar la emergencia en Níger en un dia.
+\noindent Se trata del problema de determinar el esquema óptimo de ayudar la emergencia en Níger.
 \section{Conjuntos}
 \begin{align*}
 	i,j&: \text{Ciudad}, \quad i=1,\dots,7\\
@@ -77,22 +77,20 @@ Vamos a tratarlas una a una, y después resolvemos como un problema multiobjecti
 	\forall i,j,k \mid dist_{i,j} > 0, \quad & X_{i,j,k} \leq cota_k \cdot Y_{i,j,k}
 \end{align*}
 
-\section{Solucion}
-\begin{itemize}
-	\item Minimizar el coste del ayuda total:\\ Coste =  65579.1667, Equidad = 0.2667, Tiempo = 127.2500 
-	\item Maximizar la equidad entre Agadez y Zinder: \\Coste = 80000.0000, Equidad =  0.4762, Tiempo = 127.2500 
-	\item Minimizar el tiempo de hacer la operación: \\Coste = 78018.7500, Equidad =  0.2667, Tiempo = 93.5000
-\end{itemize}
+\section{Solución}
+En Table \ref{tab:dfdg} hemos resumido los resultados de los tres casos en el matriz de pagos. La letra A es para Agadez, y la letra Z es de Zinder.
 
-  \begin{table}[H]
+\begin{table}[H]
 \begin{center}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
 $$ & Coste  &  Equidad A & Equidad Z & Tiempo A (h) & Tiempo Z (h) \\ \hline
-  Min coste  & 65579.1667 &    0.2667  &   1   &  127.25 & 116.25  \\
-  Max equidad  &  80000.0 &   0.4762  &   0.4762  &  127.25 & 116.25  \\
-  Min tiempo  &  78018.75 &     0.2667  &   1   &  94.25 & 83.25  \\
+  Min Coste  & 65579.1667 &    0.2667  &   1   &  127.25 & 116.25  \\
+  Max Equidad  &  80000.0 &   0.4762  &   0.4762  &  127.25 & 116.25  \\
+  Min Tiempo  &  78018.75 &     0.2667  &   1   &  94.25 & 83.25  \\
+\hline
 \end{tabular}
-\caption{matriz de pagos}
+\caption{Matriz de pagos}
 \label{tab:dfdg}
 \end{center}
 \end{table}
@@ -100,10 +98,7 @@ $$ & Coste  &  Equidad A & Equidad Z & Tiempo A (h) & Tiempo Z (h) \\ \hline
 
 
 \section{Programación por metas}
-
-
-Ahora queremos encontrar una solución multiobjetivo donde el coste debe ser menor o igual a 80 000 euros, el tiempo menor o igual que un tiempo T, y la equidad debe ser major o igual que 0. Elegimos el tiempo mas grande de la matriz de pago para el valor de T. \\
-
+Ahora queremos encontrar una solución multiobjetivo donde el coste debe ser menor o igual a 80 000 euros, el tiempo menor o igual que un tiempo T, y la equidad debe ser major o igual que 0. Elegimos el tiempo mas grande de la matriz de pago para el valor de T. Entonces, tenemos:\\
 
 \begin{center}
 $
@@ -122,17 +117,45 @@ $
 & n_3 = \text{cantidad debajo de 0} \\
 \end{align*}
 
-\noindent La equidad es definida por ser siempre major o igual a 0, entonces queremos minimizar $p_1 + p_2$.
+\noindent La equidad es definida por ser siempre major o igual a 0, entonces solo queremos minimizar $p_1 + p_2$, sin $n_3$. El modelo que ahora tenemos es:
 
 \begin{align*}
-&\min p_1+p_2 \\
+&\min (p_1+p_2) \\
 \text{s.a.} \\
 & Coste + n_1 - p_1 = 80 000 \\
-&Time + n_2 - p_2 = 127.25 \\
+&Tiempo + n_2 - p_2 = 127.25 \\
 &Equidad+ n_3 - p_3 = 0\\
 \end{align*}
 
+\noindent con Coste, Tiempo y Equidad definen como está escrito arriba. Resolvemos en GAMS con todas las restricciones, obtenemos los siguientes resultados:
 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Coste & 71169.1667\\
+\hline
+Equidad Z & 1\\
+Equidad A & 0.2667\\
+\hline
+Tiempo Z & 116.25 \\
+Tiempo A & 126.25 \\
+\hline
+$n_1$ & 8830.8333 \\
+$n_2$ & 0\\
+$n_3$ & 0\\
+\hline
+$p_1$ & 0\\
+$p_2$ & 0\\
+$p_3$ & 0.2667\\
+\hline
+\end{tabular}
+\caption{Resultados con modelo de metas.}
+\label{tab:metas}
+\end{center}
+\end{table}
+
+\noindent Podemos ver que el el modelo con metas tenemos la misma equidad y tiempo como en el modelo de minimizar el coste, pero el coste es mas! Que pasó? Si nos fijamos en el archivo .lst en GAMS, podemos ver que en este último modelo de los coches toman otra ruta en comparación con aquella en la que se minimiza el coste.
 
 \section{Codigo GAMS}
 
