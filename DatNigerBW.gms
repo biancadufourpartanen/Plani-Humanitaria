@@ -3,6 +3,7 @@ SETS
         i / N,G,D,T,M,A,Z /
         m / C, E, TM, R /
         k / Tipo1, Tipo2/
+        h /1,2,3/
         alias (j,i);
 
 PARAMETERS
@@ -69,6 +70,10 @@ PARAMETERS
         logprob(i,j)
         logrel(i,j)
         dist(i,j)
+
+        meta1
+        meta2
+        meta3
 ;
 
 TABLE cf(i,j,k)
@@ -189,6 +194,9 @@ cf(i,j,k)=cf(i,j,k)/100;
 cv(i,j)=cv(i,j)/100;
 *logprob(i,j) = log(prob(i,j));
 *logrel(i,j) = log(rel(i,j));
+meta1 = 80000;
+meta2 = 127.25;
+meta3 = 0;
 
 VARIABLES
 X(i,j,k) numero de vehiculos k de ciudad i a j
@@ -196,22 +204,34 @@ carga(i,j,k) carga de ciudad i a j con vehiculo tipo k
 Y(i,j,k) uno si vehiculo tipo k viaja de i a j
 load(i) cantidad de carga que se queda en i
 Time(i) tiempo en llegar a la ciudad i 
-*cairstay(i,k) numero de vehiculos k que se queda en i
+
 Coste Coste total
 Equidad 
 Tiempo
+Metas
+
+p(h) cantidad sobre el criterio
+n(h) cantidad bajo el criterio
 ;
+
 positive variable X
 positive variable carga
 positive variable load
 positive variable Time
 binary variable Y
-*positive variable carstay
+positive variable p
+positive variable n
 
+*----------------------------*
+*----------------------------*
 EQUATIONS
+*----------------------------*
+*----------------------------*
+
 FOBJETIVO1 restriccion de la funcion objectivo cost
 FOBJETIVO2 equidad 
 FOBJETIVO3 tiempo
+FOBJETIVO4 metas
 
 flujoAyuda lo que sale tiene que ser igual a lo que llega
 flujoCoche lo que sale tiene que ser igual o menor a lo que llega
@@ -221,12 +241,16 @@ cargacapa la carga tiene que ser menor que lo que podemos transportar
 maxbudget budget maximo
 resTiempo
 res8
-*oferta la carga tiene que empezar en N y G
+
+resmeta1
+resmeta2
+resmeta3
 ;
 
 FOBJETIVO1.. Coste =E= SUM((i,j,k)$(dist(i,j)>0), dist(i,j)*(2*X(i,j,k)*cf(i,j,k)+cv(i,j)*carga(i,j,k)));
 FOBJETIVO2(i)$(d(i)>0).. Equidad =L= load(i)/d(i);
 FOBJETIVO3(i)$(d(i)>0).. Tiempo =G= Time(i);
+FOBJETIVO4.. Metas =E= p('1') + p('2');
 
 flujoAyuda(j).. SUM((i,k)$(dist(i,j) > 0), carga(i,j,k)) + av(j) =E= SUM((i,k)$(dist(j,i) > 0), carga(j,i,k)) + load(j);
 flujoCoche(j,k).. SUM(i$(dist(i,j) > 0), X(i,j,k)) + vav(k,j) =G= SUM(i$(dist(j,i) > 0), X(j,i,k));
@@ -234,40 +258,27 @@ flow(j).. load(j) =L= d(j)+av(j);
 demandatot.. load('A')+load('Z') =E= qglobal;
 cargacapa(i,j,k)$(dist(i,j) > 0).. carga(i,j,k) =L= cap(k)*X(i,j,k);
 maxbudget.. Coste =L= budget;
-
 resTiempo(i,j,k)$(dist(i,j)>0).. Time(j) =G= Time(i) + (dist(i,j)/(min(velv(k), velc(i,j)))) - 10000*(1-Y(i,j,k));
 res8(i,j,k)$(dist(i,j)>0).. X(i,j,k) =L= cota(k)*Y(i,j,k);
 
-*oferta.. carga('N','D')+carga('N','T')+carga('G','D')+carga('G','M') =E= qglobal;
-*flujoCoche(j,k).. SUM(i$(dist(i,j) gt 0), X(i,j,k))+ vav(k,j) =E= SUM(i$(dist(j,i) gt 0), X(j,i,k))+carstay(j,k);
-
+resmeta1.. Coste + n('1') - p('1') =E= meta1;
+resmeta2.. Tiempo + n('2') - p('2') =E= meta2;
+resmeta3.. Equidad + n('3') - p('3') =E= meta3;
 
 options optcr=0;
 
-*model thecost /FOBJETIVO1, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
-model thecost /all/;
+*Coste
+model thecost /FOBJETIVO1,FOBJETIVO2,FOBJETIVO3,flujoAyuda,flujoCoche,flow,demandatot,cargacapa,maxbudget,resTiempo,res8/;
 solve thecost minimize Coste using MIP;
 
-*model theequality /FOBJETIVO2, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8,resTiempo/;
-model theequality /all/;
+*Equidad
+model theequality /FOBJETIVO1,FOBJETIVO2,FOBJETIVO3,flujoAyuda,flujoCoche,flow,demandatot,cargacapa,maxbudget,resTiempo,res8/;
 solve theequality maximize Equidad using MIP;
 
-*model thetime /FOBJETIVO3, flujoAyuda, flujoCoche, flow, demandatot, cargacapa, maxbudget, res8, resTiempo/;
-model thetime /all/;
+*Tiempo
+model thetime /FOBJETIVO1,FOBJETIVO2,FOBJETIVO3,flujoAyuda,flujoCoche,flow,demandatot,cargacapa,maxbudget,resTiempo,res8/;
 solve thetime minimize Tiempo using MIP;
 
-
-*$(dist(i,j) gt 0),
-
-*min coste
-*min tiempo
-*min equidad
-*-> matriz de pagos
-
-*min p_1+p_2
-*coste+n_1-p_1 = meta_c
-*tiempo+n_2-p_2 = meta_t
-*equidad +n_3-p_3 = 0
-
-*Hasta 25 de mayo
-*Programacion multiobjectivo por metas
+*Metas
+model themeta /all/;
+solve themeta minimize Metas using MIP;
