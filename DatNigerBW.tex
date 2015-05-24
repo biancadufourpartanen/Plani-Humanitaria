@@ -1,7 +1,7 @@
 \documentclass[]{article}
 
 \usepackage{amsmath}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{float}
@@ -57,10 +57,10 @@
 Queremos hacer tres cosas en este modelo:
 \begin{itemize}
 	\item Minimizar el coste del ayuda total.
-	\item Maximizar el equidad entre Agadez y Zinder.
+	\item Maximizar la equidad entre Agadez y Zinder.
 	\item Minimizar el tiempo de hacer el operación.
 \end{itemize}
-Vamos a tratarlas una a una, y después resolvemos como una problema multiobjectivo por metas.
+Vamos a tratarlas una a una, y después resolvemos como un problema multiobjectivo por metas.
 
 \begin{align*}
 	\min \; & Coste = \sum_{i,j,k \mid dist_{i,j} > 0} dist_{i,j}\cdot (2\cdot X_{i,j,k}\cdot cf_{k}+cv\cdot carga_{i,j,k})\\
@@ -80,9 +80,62 @@ Vamos a tratarlas una a una, y después resolvemos como una problema multiobject
 \section{Solucion}
 \begin{itemize}
 	\item Minimizar el coste del ayuda total:\\ Coste =  65579.1667, Equidad = 0.2667, Tiempo = 127.2500 
-	\item Maximizar el equidad entre Agadez y Zinder: \\Coste = 80000.0000, Equidad =  0.4762, Tiempo = 127.2500 
-	\item Minimizar el tiempo de hacer el operación: \\Coste = 78018.7500, Equidad =  0.2667, Tiempo = 93.5000
+	\item Maximizar la equidad entre Agadez y Zinder: \\Coste = 80000.0000, Equidad =  0.4762, Tiempo = 127.2500 
+	\item Minimizar el tiempo de hacer la operación: \\Coste = 78018.7500, Equidad =  0.2667, Tiempo = 93.5000
 \end{itemize}
+
+  \begin{table}[H]
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|}
+$$ & Coste  &  Equidad A & Equidad Z & Tiempo A (h) & Tiempo Z (h) \\ \hline
+  Min coste  & 65579.1667 &    0.2667  &   1   &  127.25 & 116.25  \\
+  Max equidad  &  80000.0 &   0.4762  &   0.4762  &  127.25 & 116.25  \\
+  Min tiempo  &  78018.75 &     0.2667  &   1   &  94.25 & 83.25  \\
+\end{tabular}
+\caption{matriz de pagos}
+\label{tab:dfdg}
+\end{center}
+\end{table}
+
+
+
+\section{Programación por metas}
+
+
+Ahora queremos encontrar una solución multiobjetivo donde el coste debe ser menor o igual a 80 000 euros, el tiempo menor o igual que un tiempo T, y la equidad debe ser major o igual que 0. Elegimos el tiempo mas grande de la matriz de pago para el valor de T. \\
+
+
+\begin{center}
+$
+\begin{cases}
+Coste + n_1 - p_1 = 80 000 \\
+Time + n_2 - p_2 = T \\
+Equidad+ n_3 - p_3 = 0\\
+\end{cases}
+$
+\end{center}
+
+\noindent Donde 
+\begin{align*}
+& p_1 = \text{cantidad arriba de 80 000} \\
+& p_2 = \text{tiempo arriba de T} \\
+& n_3 = \text{cantidad debajo de 0} \\
+\end{align*}
+
+\noindent La equidad es definida por ser siempre major o igual a 0, entonces queremos minimizar $p_1 + p_2$.
+
+\begin{align*}
+&\min p_1+p_2 \\
+\text{s.a.} \\
+& Coste + n_1 - p_1 = 80 000 \\
+&Time + n_2 - p_2 = 127.25 \\
+&Equidad+ n_3 - p_3 = 0\\
+\end{align*}
+
+
+
 \section{Codigo GAMS}
+
+
 
 \end{document}
