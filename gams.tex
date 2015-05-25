@@ -1,0 +1,31 @@
+\usepackage{listings}
+%author Edson Cordeiro do Valle edsoncv at gmail dot com
+
+\lstdefinelanguage{GAMS}{
+morekeywords={
+ABORT , ACRONYM , ACRONYMS , ALIAS , ALL , AND , ASSIGN , BINARY , CARD , DISPLAY , EPS , EQ , EQUATION , EQUATIONS , GE , GT , INF , INTEGER , LE , LOOP , LT , MAXIMIZING , MINIMIZING , MODEL , MODELS , NA , NE , NEGATIVE , NOT , OPTION , OPTIONS , OR , ORD , PARAMETER , PARAMETERS , $POSITIVE , PROD , SCALAR , SCALARS , SET , SETS , SMAX , SMIN , SOS1 , SOS2 , SUM , SYSTEM , TABLE , USING , VARIABLE , VARIABLES , XOR , YES , REPEAT , UNTIL , WHILE , IF , THEN , ELSE , SEMICONT , SEMIINT , FILE , FILES , PUT , PUTPAGE , PUTTL , PUTCLOSE , FREE , NO , SOLVE , FOR , ELSEIF , ABS , ARCTAN , CEIL , COS , ERROR , EXP , FLOOR , LOG , LOG10 , MAP , MAPVAL , MAX , MIN , MOD , NORMAL , POWER , ROUND , SIGN , SIN , SQR , SQRT , TRUNC , UNIFORM , LO , UP , FX , SCALE , PRIOR , PC , PS , PW , TM , BM , CASE , DATE , IFILE , OFILE , PAGE , RDATE , RFILE , RTIME , SFILE , TIME , TITLE , TS , TL , TE , TF , LJ , NJ , SJ , TJ , LW , NW , SW , TW , ND , NR , NZ , CC , HDCC , TLCC , LL , HDLL , TLLL , LP , WS , /,PROD: },
+sensitive = false,
+morecomment=[f]*,%
+morecomment=[s]{$ontext}{$offtext},
+morecomment=[s][\color{green}]{/}{/},
+morestring=[b]”,
+morestring=[b]’
+}
+\lstset{
+basicstyle=\fontfamily{pcr}\fontseries{m}\selectfont\footnotesize,
+commentstyle=\color{gray}\itshape,
+keywordstyle=\color{blue}\bfseries,
+stringstyle=\color[rgb]{0.5,0,0.5}\itshape,
+showstringspaces=false,
+numbers=left,
+numberstyle=\color[rgb]{0,0.5,0.5}\fontfamily{pcr}\fontseries{m}\selectfont\tiny,
+numberblanklines=false,
+showlines=false,
+belowskip=\bigskipamount{},
+breaklines=true,
+%stepnumber=2,
+tabsize=6,
+%extendedchars=true,
+%float=h,
+frame=tb
+}
